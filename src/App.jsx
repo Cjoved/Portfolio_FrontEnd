@@ -87,7 +87,7 @@ function App() {
         }}
       />
       <LenisProvider lenisRef={lenisRef}>
-        <div className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950">
+        <div className="min-h-screen min-w-[320px] w-full max-w-[100vw] overflow-x-hidden bg-gradient-to-b from-slate-950 via-blue-950 to-slate-950">
           <Navbar activeSection={activeSection} />
 
           <motion.main
