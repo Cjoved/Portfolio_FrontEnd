@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useForm, ValidationError } from '@formspree/react'
 import { toast } from 'sonner'
@@ -203,12 +203,14 @@ function ContactFormWithSpree() {
 
 function Contact() {
   if (!FORMSPREE_ID) {
-    return <ContactFallback />
+    return <ContactFormFallback />
   }
   return <ContactFormWithSpree />
 }
 
-function ContactFallback() {
+// Same form UI when Formspree ID is not set — submit opens their email app with message (so they still "message on the page")
+function ContactFormFallback() {
+  const [submitting, setSubmitting] = useState(false)
   const contactInfo = [
     { icon: FaEnvelope, text: 'veridianocrich@gmail.com', link: 'mailto:veridianocrich@gmail.com' },
     { icon: FaPhone, text: '+63-966-224-758', link: 'tel:+63966224758' },
@@ -218,6 +220,23 @@ function ContactFallback() {
     { icon: FaLinkedin, href: 'https://linkedin.com/in/crichveridiano', label: 'LinkedIn' },
     { icon: FaGithub, href: 'https://github.com/Cjoved', label: 'GitHub' },
   ]
+  const onMailtoSubmit = (e) => {
+    e.preventDefault()
+    const form = e.target
+    const name = (form.name?.value || '').trim()
+    const email = (form.email?.value || '').trim()
+    const message = (form.message?.value || '').trim()
+    if (!name || !email || !message) {
+      toast.error('Please fill in name, email, and message.')
+      return
+    }
+    setSubmitting(true)
+    const subject = encodeURIComponent(`Portfolio message from ${name}`)
+    const body = encodeURIComponent(`${message}\n\n---\nFrom: ${name} <${email}>`)
+    window.location.href = `mailto:veridianocrich@gmail.com?subject=${subject}&body=${body}`
+    toast.success("Opening your email app. Send the email to reach me.")
+    setSubmitting(false)
+  }
   return (
     <div className="min-h-screen py-24 px-4 bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
@@ -246,9 +265,23 @@ function ContactFallback() {
               </div>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="flex items-center justify-center">
-            <a href="mailto:veridianocrich@gmail.com" className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/30 transition-shadow">Email me</a>
-          </motion.div>
+          <motion.form initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} onSubmit={onMailtoSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="fallback-name" className="block text-gray-300 mb-2">Name</label>
+              <input type="text" id="fallback-name" name="name" placeholder="Your Name" disabled={submitting} className={inputBase} required minLength={2} />
+            </div>
+            <div>
+              <label htmlFor="fallback-email" className="block text-gray-300 mb-2">Email</label>
+              <input type="email" id="fallback-email" name="email" placeholder="your.email@example.com" disabled={submitting} className={inputBase} required />
+            </div>
+            <div>
+              <label htmlFor="fallback-message" className="block text-gray-300 mb-2">Message</label>
+              <textarea id="fallback-message" name="message" rows="6" placeholder="Your Message" disabled={submitting} className={inputBase} required minLength={10} />
+            </div>
+            <motion.button type="submit" disabled={submitting} whileHover={!submitting ? { scale: 1.02 } : {}} whileTap={!submitting ? { scale: 0.98 } : {}} className="w-full px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-cyan-500/30 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed">
+              {submitting ? 'Opening...' : 'Send Message'}
+            </motion.button>
+          </motion.form>
         </div>
       </div>
     </div>
