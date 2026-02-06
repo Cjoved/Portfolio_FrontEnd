@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaRobot } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 
-const CARD_WIDTH_DESKTOP = 480
-const CARD_OVERLAP_DESKTOP = 140
+const CARD_WIDTH_DESKTOP = 400
+const CARD_OVERLAP_DESKTOP = 100
 const STEP_DESKTOP = CARD_WIDTH_DESKTOP - CARD_OVERLAP_DESKTOP
 
 const projectTypes = {
@@ -109,8 +109,10 @@ function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
           onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }}
         />
       </AnimatePresence>
-      <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-5xl text-cyan-400/60 absolute inset-0">
-        🤖
+      <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center absolute inset-0">
+        <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
+          <FaRobot className="w-8 h-8 text-cyan-400" />
+        </div>
       </div>
     </div>
   )
@@ -120,7 +122,6 @@ const Projects = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
   const [direction, setDirection] = useState(0)
-
   const goNext = () => {
     setDirection(1)
     setDescriptionExpanded(false)
@@ -141,10 +142,10 @@ const Projects = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-2xl mx-auto px-2 md:px-4 scroll-mt-24"
+      className="w-full max-w-xl mx-auto px-2 md:px-0 md:max-w-none scroll-mt-24"
       id="project-detail"
     >
-      <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-5 md:p-8 shadow-xl">
+      <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-4 md:p-6 shadow-xl">
         <div className="flex flex-wrap items-baseline gap-2 mb-1">
           <h3 className="font-display text-lg md:text-2xl font-semibold text-white">
             {currentProject.title}
@@ -214,10 +215,10 @@ const Projects = () => {
   )
 
   return (
-    <div className="relative min-h-screen py-24 px-4 overflow-x-hidden overflow-y-visible">
+    <div className="relative min-h-screen py-24 px-2 sm:px-3 md:px-4 overflow-x-hidden overflow-y-visible">
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" aria-hidden />
       <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-amber-500/5 blur-3xl pointer-events-none" aria-hidden />
-      <div className="max-w-6xl mx-auto relative flex flex-col z-10">
+      <div className="max-w-[1440px] mx-auto relative flex flex-col z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -253,8 +254,10 @@ const Projects = () => {
                     {(projects[currentIndex].image || projects[currentIndex].images?.length) ? (
                       <ProjectImage project={projects[currentIndex]} />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40">
-                        🤖
+                      <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
+                        <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
+                          <FaRobot className="w-8 h-8 text-cyan-400" />
+                        </div>
                       </div>
                     )}
                     <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[projects[currentIndex].type].class}`}>
@@ -292,11 +295,18 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* Desktop: carousel + description (full width); laptop in left bottom corner blob */}
-        <div className="hidden md:block">
+        {/* Desktop: two clear containers — explanation LEFT, carousel RIGHT (no overlap) */}
+        <div className="hidden md:grid md:grid-cols-[minmax(0,1fr)_minmax(520px,1.75fr)] md:gap-6 lg:gap-8 md:items-start md:w-full">
+          {/* Left container: explanation only */}
+          <div className="min-w-0 flex flex-col">
+            <div className="lg:sticky lg:top-24">
+              <DescriptionPanel />
+            </div>
+          </div>
+          {/* Right container: carousel only — min-width so side cards always peek through */}
+          <div className="min-w-0 flex flex-col items-center overflow-hidden">
           <div
-            className="relative min-h-[420px] lg:min-h-[460px] overflow-visible flex justify-center w-screen"
-            style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}
+            className="relative min-h-[420px] lg:min-h-[460px] overflow-hidden flex justify-center w-full min-w-0"
           >
             {/* Arrows in separate layer — fixed left/right so they never move when track animates */}
             <div className="absolute inset-0 flex justify-between items-center px-4 lg:px-6 pointer-events-none">
@@ -357,16 +367,18 @@ const Projects = () => {
                           {(project.image || project.images?.length) ? (
                             <ProjectImage project={project} />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40 bg-slate-800/80">
-                              🤖
+                            <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
+                              <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
+                                <FaRobot className="w-8 h-8 text-cyan-400" />
+                              </div>
                             </div>
                           )}
                           <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[project.type].class}`}>
                             {projectTypes[project.type].label}
                           </span>
                         </div>
-                        <div className="p-5">
-                          <h3 className="font-display text-xl font-semibold text-white leading-tight">{project.title}</h3>
+                        <div className="p-4">
+                          <h3 className="font-display text-lg font-semibold text-white leading-tight">{project.title}</h3>
                           {project.subtitle && (
                             <p className="text-cyan-400/90 text-sm mt-1 leading-tight line-clamp-1">{project.subtitle}</p>
                           )}
@@ -378,14 +390,9 @@ const Projects = () => {
                 )
               })}
             </motion.div>
-          </div>
+            </div>
 
-          <div className="mt-10">
-            <DescriptionPanel />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-2 mt-8">
+        <div className="flex items-center justify-center gap-2 mt-6 w-full">
           {projects.map((_, i) => (
             <motion.button
               key={i}
@@ -401,6 +408,27 @@ const Projects = () => {
           ))}
         </div>
         <p className="text-center text-gray-500 text-sm mt-2">
+          {currentIndex + 1} / {projects.length}
+        </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-2 mt-8 md:hidden">
+          {projects.map((_, i) => (
+            <motion.button
+              key={i}
+              type="button"
+              onClick={() => { setDescriptionExpanded(false); setCurrentIndex(i) }}
+              aria-label={`Project ${i + 1}`}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                i === currentIndex ? 'w-8 bg-cyan-400' : 'w-2.5 bg-slate-600 hover:bg-slate-500'
+              }`}
+            />
+          ))}
+        </div>
+        <p className="text-center text-gray-500 text-sm mt-2 md:hidden">
           {currentIndex + 1} / {projects.length}
         </p>
       </div>
