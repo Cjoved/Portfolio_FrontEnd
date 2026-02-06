@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FaLinkedin } from 'react-icons/fa'
+import { getImageUrl } from '../utils/cloudinary'
 
 const About = () => {
   const containerVariants = {
@@ -58,7 +59,7 @@ const About = () => {
                 className="relative w-full h-full rounded-full overflow-hidden border-4 border-cyan-400/50 bg-slate-800/60 shadow-2xl ring-4 ring-cyan-500/20"
               >
                 <img
-                  src="/profile.png"
+                  src={getImageUrl('/profile_g6cu4g.png')}
                   alt="Crich Joved Veridiano"
                   className="w-full h-full object-cover object-top scale-105"
                   onError={(e) => { e.target.style.display = 'none'; }}

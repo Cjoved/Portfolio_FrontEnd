@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import Lottie from 'lottie-react'
+import { getImageUrl, getResumeUrl } from '../utils/cloudinary'
 
 const Hero = () => {
   const [avatarError, setAvatarError] = useState(false)
@@ -39,7 +40,7 @@ const Hero = () => {
       {/* neuro.jpg: ambient AI/neural theme; strong overlay keeps text primary (UX) */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
-        style={{ backgroundImage: 'url(/neuro.jpg)' }}
+        style={{ backgroundImage: `url(${getImageUrl('/neuro_j6huxq.jpg')})` }}
         aria-hidden
       />
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/92 via-slate-950/85 to-slate-950/95 pointer-events-none" aria-hidden />
@@ -91,9 +92,10 @@ const Hero = () => {
               Get In Touch
             </motion.a>
             <motion.a
-              href="/resume.pdf"
+              href={getResumeUrl()}
               target="_blank"
               rel="noopener noreferrer"
+              download="Crich_Veridiano_Resume.pdf"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               className="min-h-[44px] inline-flex items-center px-6 py-3 rounded-lg text-gray-400 font-semibold hover:text-white transition-colors"
@@ -146,14 +148,14 @@ const Hero = () => {
             >
               {!avatarError ? (
                 <img
-                  src="/avatar.png"
+                  src={getImageUrl('/profile_g6cu4g.png')}
                   alt="Crich Joved Veridiano"
                   className="w-full h-full object-cover object-top scale-105"
                   onError={() => setAvatarError(true)}
                 />
               ) : (
                 <img
-                  src="/profile.png"
+                  src={getImageUrl('/profile_g6cu4g.png')}
                   alt="Crich Joved Veridiano"
                   className="w-full h-full object-cover object-top scale-105"
                   onError={(e) => {

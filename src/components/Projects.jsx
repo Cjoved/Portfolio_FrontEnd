@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaRobot } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
+import { getImageUrl } from '../utils/cloudinary'
 
 const CARD_WIDTH_DESKTOP = 400
 const CARD_OVERLAP_DESKTOP = 100
@@ -27,8 +28,8 @@ const projects = [
     title: 'Agentic AI Evaluator',
     subtitle: 'Multi-Agent Agricultural Trial Evaluation System',
     type: 'professional',
-    image: '/evaluator/eval1.png',
-    images: ['/evaluator/eval1.png', '/evaluator/eval2.png', '/evaluator/eval3.png', '/evaluator/eval4.png', '/evaluator/eval5.png'],
+    image: '/eval1_of3csr.png',
+    images: ['/eval1_of3csr.png', '/eval2_qot7rd.png', '/eval3_kp3byo.png', '/eval4_ggk8ir.png', '/eval5_vqqphp.png'],
     description: '8-stage LangGraph workflow to process agricultural demo trial PDFs with quality gates and automatic retries. CrewAI multi-agent evaluation layer (4 specialized agents) with confidence-scored quality assessment. Hybrid semantic + keyword search over Qdrant with ensemble retriever. Conversational AI agent with 30+ specialized tools and PostgreSQL-backed memory, supporting Taglish/Filipino/English. Redis + ARQ background workers for async job processing, API authentication, rate limiting, and full LLM observability.',
     tech: ['Python', 'FastAPI', 'LangGraph', 'CrewAI', 'LangChain', 'Google Gemini', 'OpenRouter', 'Qdrant', 'PostgreSQL', 'Redis/ARQ', 'Docker', 'Langfuse'],
     github: 'https://github.com/Cjoved',
@@ -48,8 +49,8 @@ const projects = [
     title: 'RHive (Research Hive)',
     subtitle: 'Thesis/Capstone Management System',
     type: 'academic',
-    image: '/rhive/rhive1.png',
-    images: ['/rhive/rhive1.png', '/rhive/rhive2.png', '/rhive/rhive3.png', '/rhive/rhive4.png'],
+    image: '/rhive1_wxjwpl.png',
+    images: ['/rhive1_wxjwpl.png', '/rhive2_c0dpbd.png', '/rhive3_qt2y1n.png', '/rhive4_irbkdg.png'],
     description: 'Led design and implementation of IMRaD manuscript generation module, transforming raw research content into structured academic drafts. NLP-powered pipeline (Python + FastAPI) with preprocessing, section detection, and LLM-based prompts for IMRaD formatting. Integrated with main RHive web platform for automated manuscript formatting. Thesis system achieved ISO 25010:2023 software quality rating of 4.4 (Effective/Highly Effective) for usability, reliability, and security.',
     tech: ['Vite React', 'Tailwind CSS', 'Node.js', 'Express.js', 'Python (FastAPI)', 'Firestore', 'NLP/LLM'],
     github: 'https://github.com/Cjoved/imrad-gen',
@@ -59,8 +60,8 @@ const projects = [
     title: 'Conversational Support & Ticketing System',
     subtitle: 'AI Intern – PROMPTING_AI AGENT',
     type: 'internship',
-    image: '/support/support1.png',
-    images: ['/support/support1.png', '/support/support2.png', '/support/support3.png'],
+    image: '/support1_garqwr.png',
+    images: ['/support1_garqwr.png', '/support2_o8qevh.png', '/support3_tq2fiw.png'],
     description: 'FastAPI + LangChain support agent routing user queries by intent and tone across multiple LLMs via OpenRouter. Intent and tone detection pipeline with LLM prompt design and retry/fallback logic. Ticketing workflow with automatic ticket creation (ID, priority, category, status) and database integration. /chat API with optional word-by-word streaming responses and cache management endpoints.',
     tech: ['Python', 'FastAPI', 'LangChain', 'OpenRouter (Mistral, DeepSeek, OpenChat)', 'MySQL', 'Pydantic'],
     github: 'https://github.com/Intern94/chat_support',
@@ -91,8 +92,15 @@ function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
     return () => clearInterval(id)
   }, [images])
 
-  const src = images ? images[slideIndex] : singleImage
-  if (!src) return null
+  const rawSrc = images ? images[slideIndex] : singleImage
+  if (!rawSrc) return null
+  const src = getImageUrl(rawSrc, { quality: 'auto', fetchFormat: 'auto' })
+  const isCloudinary = src.startsWith('https://res.cloudinary.com/')
+  const showRobotPlaceholder = (e) => {
+    const el = e.target
+    el.style.display = 'none'
+    el.nextElementSibling?.classList.remove('hidden')
+  }
 
   return (
     <div className="absolute inset-0">
@@ -106,10 +114,10 @@ function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }}
+          onError={showRobotPlaceholder}
         />
       </AnimatePresence>
-      <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center absolute inset-0">
+      <div className="hidden w-full h-full bg-slate-800/80 flex items-center justify-center absolute inset-0">
         <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
           <FaRobot className="w-8 h-8 text-cyan-400" />
         </div>
@@ -445,7 +453,7 @@ const Projects = () => {
         <div className="absolute inset-0 blob-corner-lb bg-gradient-to-tr from-cyan-500/20 via-transparent to-transparent" />
         <div className="absolute inset-0 blob-corner-lb overflow-hidden">
           <img
-            src="/laptop.png"
+            src={getImageUrl('/laptop_vqb31a.png')}
             alt="Development setup — modern tools and workflows"
             className="absolute inset-0 w-full h-full object-cover object-left object-bottom"
             loading="lazy"

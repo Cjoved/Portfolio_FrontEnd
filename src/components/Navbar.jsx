@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { cn } from '../utils/cn'
+import { getImageUrl, getResumeUrl } from '../utils/cloudinary'
 import { useLenis } from '../context/LenisContext'
 
 const Navbar = ({ activeSection }) => {
@@ -35,7 +36,7 @@ const Navbar = ({ activeSection }) => {
             whileHover={{ scale: 1.02 }}
             className="flex items-center gap-2 text-xl font-bold text-white"
           >
-            <img src="/logo.png" alt="Crich Veridiano" className="h-8 w-8 rounded object-contain" />
+            <img src={getImageUrl('/logo_fqqftz.png')} alt="Crich Veridiano" className="h-8 w-8 rounded object-contain" />
             <span className="font-extrabold">Crich</span>
             <span className="text-cyan-400 font-semibold">Veridiano</span>
           </motion.a>
@@ -57,9 +58,10 @@ const Navbar = ({ activeSection }) => {
               </motion.button>
             ))}
             <a
-              href="/resume.pdf"
+              href={getResumeUrl()}
               target="_blank"
               rel="noopener noreferrer"
+              download="Crich_Veridiano_Resume.pdf"
               className="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors hidden md:block"
             >
               Resume
@@ -114,7 +116,7 @@ const Navbar = ({ activeSection }) => {
                 {item.name}
               </button>
             ))}
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-cyan-400">
+            <a href={getResumeUrl()} target="_blank" rel="noopener noreferrer" download="Crich_Veridiano_Resume.pdf" className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-cyan-400">
               Download Resume
             </a>
             <button

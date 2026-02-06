@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { getImageUrl } from '../utils/cloudinary'
 
 const Skills = () => {
   const skillCategories = [
@@ -96,7 +97,7 @@ const Skills = () => {
         <div className="absolute inset-0 blob-corner-rb bg-gradient-to-tl from-cyan-500/20 via-transparent to-transparent" />
         <div className="absolute inset-0 blob-corner-rb overflow-hidden">
           <img
-            src="/robot.png"
+            src={getImageUrl('/robot_axxsvy.png')}
             alt="AI and development — multi-agent systems, LLMs, and modern tools"
             className="absolute inset-0 w-full h-full object-cover object-right object-bottom"
             loading="lazy"
