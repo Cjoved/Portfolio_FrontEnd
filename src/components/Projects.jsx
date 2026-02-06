@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const CARD_WIDTH_DESKTOP = 480
 const CARD_OVERLAP_DESKTOP = 140
@@ -47,10 +47,11 @@ const projects = [
     title: 'RHive (Research Hive)',
     subtitle: 'Thesis/Capstone Management System',
     type: 'academic',
-    image: '/projects/rhive.jpg',
+    image: '/rhive/rhive1.png',
+    images: ['/rhive/rhive1.png', '/rhive/rhive2.png', '/rhive/rhive3.png', '/rhive/rhive4.png'],
     description: 'Led design and implementation of IMRaD manuscript generation module, transforming raw research content into structured academic drafts. NLP-powered pipeline (Python + FastAPI) with preprocessing, section detection, and LLM-based prompts for IMRaD formatting. Integrated with main RHive web platform for automated manuscript formatting. Thesis system achieved ISO 25010:2023 software quality rating of 4.4 (Effective/Highly Effective) for usability, reliability, and security.',
     tech: ['Vite React', 'Tailwind CSS', 'Node.js', 'Express.js', 'Python (FastAPI)', 'Firestore', 'NLP/LLM'],
-    github: 'https://github.com/Cjoved',
+    github: 'https://github.com/Cjoved/imrad-gen',
     demo: null,
   },
   {
@@ -60,7 +61,7 @@ const projects = [
     image: '/projects/support-ticketing.jpg',
     description: 'FastAPI + LangChain support agent routing user queries by intent and tone across multiple LLMs via OpenRouter. Intent and tone detection pipeline with LLM prompt design and retry/fallback logic. Ticketing workflow with automatic ticket creation (ID, priority, category, status) and database integration. /chat API with optional word-by-word streaming responses and cache management endpoints.',
     tech: ['Python', 'FastAPI', 'LangChain', 'OpenRouter (Mistral, DeepSeek, OpenChat)', 'MySQL', 'Pydantic'],
-    github: 'https://github.com/Cjoved',
+    github: 'https://github.com/Intern94/chat_support',
     demo: null,
   },
 ]
@@ -71,6 +72,46 @@ const getTrackOffset = (index) => {
   const trackWidth = (n - 1) * STEP_DESKTOP + CARD_WIDTH_DESKTOP
   const selectedCardCenter = index * STEP_DESKTOP + CARD_WIDTH_DESKTOP / 2
   return trackWidth / 2 - selectedCardCenter
+}
+
+const SLIDESHOW_INTERVAL_MS = 3500
+
+function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
+  const images = project.images?.length > 1 ? project.images : null
+  const singleImage = project.images?.[0] ?? project.image
+  const [slideIndex, setSlideIndex] = useState(0)
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return
+    const id = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % images.length)
+    }, SLIDESHOW_INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [images])
+
+  const src = images ? images[slideIndex] : singleImage
+  if (!src) return null
+
+  return (
+    <div className="absolute inset-0">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.img
+          key={src}
+          src={src}
+          alt={project.title}
+          className={className}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }}
+        />
+      </AnimatePresence>
+      <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-5xl text-cyan-400/60 absolute inset-0">
+        🚀
+      </div>
+    </div>
+  )
 }
 
 const Projects = () => {
@@ -207,18 +248,8 @@ const Projects = () => {
               >
                 <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/60 shadow-xl bg-slate-800/95">
                   <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
-                    {projects[currentIndex].image ? (
-                      <>
-                        <img
-                          src={projects[currentIndex].image}
-                          alt={projects[currentIndex].title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }}
-                        />
-                        <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-5xl text-cyan-400/60 absolute inset-0">
-                          🚀
-                        </div>
-                      </>
+                    {(projects[currentIndex].image || projects[currentIndex].images?.length) ? (
+                      <ProjectImage project={projects[currentIndex]} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40">
                         🚀
@@ -321,18 +352,8 @@ const Projects = () => {
                     >
                       <div className="bg-slate-800/95 backdrop-blur-sm">
                         <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
-                          {project.image ? (
-                            <>
-                              <img
-                                src={project.image}
-                                alt={project.title}
-                                className="w-full h-full object-cover"
-                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }}
-                              />
-                              <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-5xl text-cyan-400/60 absolute inset-0">
-                                🚀
-                              </div>
-                            </>
+                          {(project.image || project.images?.length) ? (
+                            <ProjectImage project={project} />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40 bg-slate-800/80">
                               🚀
