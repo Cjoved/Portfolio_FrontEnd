@@ -27,7 +27,8 @@ const projects = [
     title: 'Agentic AI Evaluator',
     subtitle: 'Multi-Agent Agricultural Trial Evaluation System',
     type: 'professional',
-    image: '/projects/evaluator.jpg',
+    image: '/evaluator/eval1.png',
+    images: ['/evaluator/eval1.png', '/evaluator/eval2.png', '/evaluator/eval3.png', '/evaluator/eval4.png', '/evaluator/eval5.png'],
     description: '8-stage LangGraph workflow to process agricultural demo trial PDFs with quality gates and automatic retries. CrewAI multi-agent evaluation layer (4 specialized agents) with confidence-scored quality assessment. Hybrid semantic + keyword search over Qdrant with ensemble retriever. Conversational AI agent with 30+ specialized tools and PostgreSQL-backed memory, supporting Taglish/Filipino/English. Redis + ARQ background workers for async job processing, API authentication, rate limiting, and full LLM observability.',
     tech: ['Python', 'FastAPI', 'LangGraph', 'CrewAI', 'LangChain', 'Google Gemini', 'OpenRouter', 'Qdrant', 'PostgreSQL', 'Redis/ARQ', 'Docker', 'Langfuse'],
     github: 'https://github.com/Cjoved',
@@ -58,7 +59,8 @@ const projects = [
     title: 'Conversational Support & Ticketing System',
     subtitle: 'AI Intern – PROMPTING_AI AGENT',
     type: 'internship',
-    image: '/projects/support-ticketing.jpg',
+    image: '/support/support1.png',
+    images: ['/support/support1.png', '/support/support2.png', '/support/support3.png'],
     description: 'FastAPI + LangChain support agent routing user queries by intent and tone across multiple LLMs via OpenRouter. Intent and tone detection pipeline with LLM prompt design and retry/fallback logic. Ticketing workflow with automatic ticket creation (ID, priority, category, status) and database integration. /chat API with optional word-by-word streaming responses and cache management endpoints.',
     tech: ['Python', 'FastAPI', 'LangChain', 'OpenRouter (Mistral, DeepSeek, OpenChat)', 'MySQL', 'Pydantic'],
     github: 'https://github.com/Intern94/chat_support',
@@ -108,7 +110,7 @@ function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
         />
       </AnimatePresence>
       <div className="hidden w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center text-5xl text-cyan-400/60 absolute inset-0">
-        🚀
+        🤖
       </div>
     </div>
   )
@@ -252,7 +254,7 @@ const Projects = () => {
                       <ProjectImage project={projects[currentIndex]} />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40">
-                        🚀
+                        🤖
                       </div>
                     )}
                     <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[projects[currentIndex].type].class}`}>
@@ -356,7 +358,7 @@ const Projects = () => {
                             <ProjectImage project={project} />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-5xl text-cyan-400/40 bg-slate-800/80">
-                              🚀
+                              🤖
                             </div>
                           )}
                           <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[project.type].class}`}>
