@@ -29,13 +29,16 @@ const Navbar = ({ activeSection }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <motion.div
+          <motion.a
+            href="#home"
+            onClick={(e) => { e.preventDefault(); scrollToSection('home') }}
             whileHover={{ scale: 1.02 }}
-            className="text-xl font-bold text-white"
+            className="flex items-center gap-2 text-xl font-bold text-white"
           >
+            <img src="/logo.png" alt="Crich Veridiano" className="h-8 w-8 rounded object-contain" />
             <span className="font-extrabold">Crich</span>
             <span className="text-cyan-400 font-semibold">Veridiano</span>
-          </motion.div>
+          </motion.a>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
