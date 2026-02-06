@@ -1,63 +1,83 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { cn } from '../utils/cn'
+import { useLenis } from '../context/LenisContext'
 
 const Navbar = ({ activeSection }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { scrollTo } = useLenis()
 
   const navItems = [
     { name: 'Home', id: 'home' },
+    { name: 'Why AI', id: 'why-ai' },
     { name: 'About', id: 'about' },
     { name: 'Skills', id: 'skills' },
     { name: 'Projects', id: 'projects' },
-    { name: 'Contact', id: 'contact' },
+    { name: 'Certifications', id: 'certifications' },
   ]
 
   const scrollToSection = (id) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setIsOpen(false)
-    }
+    scrollTo(`#${id}`)
+    setIsOpen(false)
   }
 
   return (
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className="fixed top-0 w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-purple-500/20"
+      className="fixed top-0 w-full z-50 bg-slate-950/90 backdrop-blur-md border-b border-cyan-500/20"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+            whileHover={{ scale: 1.02 }}
+            className="text-xl font-bold text-white"
           >
-            AI Engineer
+            <span className="font-extrabold">Crich</span>
+            <span className="text-cyan-400 font-semibold">Veridiano</span>
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <motion.button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeSection === item.id
-                    ? 'text-purple-400 bg-purple-500/20'
-                    : 'text-gray-300 hover:text-purple-400'
-                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  'text-sm font-medium transition-colors',
+                  activeSection === item.id ? 'text-cyan-400' : 'text-gray-300 hover:text-white'
+                )}
               >
                 {item.name}
               </motion.button>
             ))}
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors hidden md:block"
+            >
+              Resume
+            </a>
+            <motion.button
+              onClick={() => scrollToSection('contact')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold text-sm shadow-lg hover:shadow-cyan-500/30 transition-shadow"
+            >
+              Contact Us
+            </motion.button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-300 hover:text-purple-400"
+            aria-expanded={isOpen}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            className="md:hidden text-gray-300 hover:text-cyan-400 p-2"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
@@ -72,24 +92,34 @@ const Navbar = ({ activeSection }) => {
         {/* Mobile Menu */}
         {isOpen && (
           <motion.div
+            role="dialog"
+            aria-label="Navigation menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden py-4 space-y-2"
+            className="md:hidden py-4 space-y-2 border-t border-cyan-500/20"
           >
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`block w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
-                  activeSection === item.id
-                    ? 'text-purple-400 bg-purple-500/20'
-                    : 'text-gray-300 hover:text-purple-400'
-                }`}
+                className={cn(
+                  'block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium',
+                  activeSection === item.id ? 'text-cyan-400 bg-cyan-500/10' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
+                )}
               >
                 {item.name}
               </button>
             ))}
+            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-cyan-400">
+              Download Resume
+            </a>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
+            >
+              Contact Us
+            </button>
           </motion.div>
         )}
       </div>
@@ -98,5 +128,3 @@ const Navbar = ({ activeSection }) => {
 }
 
 export default Navbar
-
-
