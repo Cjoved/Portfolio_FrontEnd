@@ -118,18 +118,20 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="grid grid-cols-3 gap-6 order-3 md:col-span-2"
+            className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 order-3 md:col-span-2 min-w-0"
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="bg-slate-800/40 backdrop-blur-sm rounded-xl p-6 text-center border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+                className="bg-slate-800/40 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 text-center border border-cyan-500/30 hover:border-cyan-400/50 transition-colors min-w-0 overflow-hidden"
               >
-                <div className="text-3xl md:text-4xl font-bold text-cyan-400 mb-2">
+                <div className="text-xl sm:text-2xl md:text-4xl font-bold text-cyan-400 mb-1 sm:mb-2 truncate">
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-400">{stat.label}</div>
+                <div className="text-[10px] sm:text-xs md:text-sm text-gray-400 leading-tight line-clamp-2 break-words">
+                  {stat.label}
+                </div>
               </motion.div>
             ))}
           </motion.div>
