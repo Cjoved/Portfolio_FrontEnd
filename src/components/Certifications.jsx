@@ -10,21 +10,21 @@ const Certifications = () => {
   ]
 
   return (
-    <div className="py-24 px-4 bg-slate-900/30">
+    <div className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-slate-900/30">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-10"
+          className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-2">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-2 sm:mb-3">
             Certifications & <span className="text-amber-400 font-display italic">Training</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-2" />
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-2" />
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {certs.map((cert, index) => (
             <motion.div
               key={index}
@@ -32,14 +32,14 @@ const Certifications = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.08 }}
-              className="flex gap-4 p-4 rounded-xl bg-slate-800/40 border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
+              className="flex gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-slate-800/40 border border-cyan-500/30 hover:border-cyan-400/50 transition-colors"
             >
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">
-                <FaAward className="w-5 h-5" />
+              <div className="flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <FaAward className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <h3 className="font-semibold text-white">{cert.name}</h3>
-                <p className="text-gray-400 text-sm">{cert.issuer}</p>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-white text-sm sm:text-base">{cert.name}</h3>
+                <p className="text-gray-400 text-xs sm:text-sm">{cert.issuer}</p>
                 {cert.id && <p className="text-cyan-400/80 text-xs mt-0.5">ID: {cert.id}</p>}
                 <p className="text-gray-500 text-xs mt-1">{cert.date}</p>
               </div>

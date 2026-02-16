@@ -29,22 +29,22 @@ const About = () => {
   ]
 
   return (
-    <div className="min-h-screen py-24 px-4">
+    <div className="min-h-screen py-16 sm:py-20 md:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
             About <span className="text-amber-400 font-display italic">Me</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-2"></div>
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-2"></div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
           {/* Profile photo – larger, with glow to match Hero */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -52,7 +52,7 @@ const About = () => {
             viewport={{ once: true }}
             className="order-2 md:order-1 flex justify-center md:justify-start"
           >
-            <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+            <div className="relative w-48 h-48 xs:w-56 xs:h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
               <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-600/20 blur-xl opacity-80" />
               <motion.div
                 whileHover={{ scale: 1.02 }}
@@ -74,10 +74,10 @@ const About = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05 }}
-                className="absolute -right-2 top-1/2 -translate-y-1/2 md:right-0 md:top-auto md:translate-y-0 md:bottom-4 z-10 flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-800/95 backdrop-blur-sm border border-cyan-500/40 shadow-xl text-gray-300 hover:text-cyan-400 hover:border-cyan-400/60 transition-colors"
+                className="absolute -right-2 top-1/2 -translate-y-1/2 md:right-0 md:top-auto md:translate-y-0 md:bottom-4 z-10 flex items-center gap-2 px-2.5 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-800/95 backdrop-blur-sm border border-cyan-500/40 shadow-xl text-gray-300 hover:text-cyan-400 hover:border-cyan-400/60 transition-colors"
               >
-                <FaLinkedin className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-                <span className="text-sm font-medium whitespace-nowrap">Find me on LinkedIn</span>
+                <FaLinkedin className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-medium whitespace-nowrap">Find me on LinkedIn</span>
               </motion.a>
             </div>
           </motion.div>
@@ -88,17 +88,17 @@ const About = () => {
             viewport={{ once: true }}
             className="space-y-6 order-1 md:order-2"
           >
-            <motion.p variants={itemVariants} className="text-lg text-gray-300 leading-relaxed">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
               I'm a Junior AI Engineer with experience as a solo developer delivering end-to-end AI systems 
               in survey generation, document evaluation, and computer vision. I'm strong in Python, FastAPI, 
               LangChain/LangGraph, PyTorch/YOLO, and vector databases like Qdrant with PostgreSQL.
             </motion.p>
-            <motion.p variants={itemVariants} className="text-lg text-gray-300 leading-relaxed">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
               I design multi-agent and LLM-powered workflows, build production APIs, and handle data pipelines 
               from preprocessing to deployment. I collaborate with agricultural and business stakeholders to 
               transform domain needs into production-ready AI tools at Leads Agricultural Product Corporation.
             </motion.p>
-            <motion.p variants={itemVariants} className="text-lg text-gray-300 leading-relaxed">
+            <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
               BS in Computer Science (Data Science), Laguna University, June 2025. Relevant coursework: 
               Machine Learning, Deep Learning, NLP, Database Systems, AI, and Software Engineering.
             </motion.p>
@@ -107,7 +107,7 @@ const About = () => {
               variants={itemVariants}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-block mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold shadow-lg hover:shadow-cyan-500/30 transition-shadow"
+              className="inline-block mt-4 px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg text-sm sm:text-base bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold shadow-lg hover:shadow-cyan-500/30 transition-shadow min-h-[44px] inline-flex items-center"
             >
               Read More
             </motion.a>
@@ -124,12 +124,12 @@ const About = () => {
               <motion.div
                 key={index}
                 whileHover={{ scale: 1.1, y: -5 }}
-                className="bg-slate-800/40 backdrop-blur-sm rounded-xl p-3 sm:p-4 md:p-6 text-center border border-cyan-500/30 hover:border-cyan-400/50 transition-colors min-w-0 overflow-hidden"
+                className="bg-slate-800/40 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 text-center border border-cyan-500/30 hover:border-cyan-400/50 transition-colors min-w-0 overflow-hidden"
               >
-                <div className="text-xl sm:text-2xl md:text-4xl font-bold text-cyan-400 mb-1 sm:mb-2 truncate">
+                <div className="text-lg sm:text-2xl md:text-4xl font-bold text-cyan-400 mb-0.5 sm:mb-2 truncate">
                   {stat.value}
                 </div>
-                <div className="text-[10px] sm:text-xs md:text-sm text-gray-400 leading-tight line-clamp-2 break-words">
+                <div className="text-[10px] xs:text-xs sm:text-xs md:text-sm text-gray-400 leading-tight line-clamp-2 break-words">
                   {stat.label}
                 </div>
               </motion.div>

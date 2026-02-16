@@ -86,15 +86,15 @@ const AskCrichWidget = () => {
         animate={{ opacity: 1, scale: 1 }}
         className={cn(
           'fixed z-50 flex items-center gap-2 rounded-full shadow-lg border-2 transition-colors',
-          'bottom-6 right-6 pl-4 pr-5 py-3',
+          'bottom-5 right-4 sm:bottom-6 sm:right-6 pl-3 pr-4 py-2.5 sm:pl-4 sm:pr-5 sm:py-3 min-h-[44px]',
           'bg-slate-800/95 backdrop-blur-md border-cyan-500/50 text-white hover:bg-slate-700/95 hover:border-cyan-400/60',
           open && 'border-cyan-400 bg-cyan-500/20'
         )}
         aria-label={open ? 'Close Ask Crich AI' : 'Open Ask Crich AI'}
         aria-expanded={open}
       >
-        <FaRobot className="w-5 h-5 text-cyan-400 flex-shrink-0" />
-        <span className="text-sm font-semibold whitespace-nowrap">Ask Crich AI</span>
+        <FaRobot className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 flex-shrink-0" />
+        <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">Ask Crich AI</span>
       </motion.button>
 
       {/* Chat panel – opens above the button */}
@@ -105,25 +105,25 @@ const AskCrichWidget = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-50 w-[min(calc(100vw-3rem),400px)] rounded-2xl overflow-hidden border-2 border-cyan-500/40 bg-slate-800/98 backdrop-blur-xl shadow-2xl flex flex-col max-h-[min(70vh,520px)]"
+            className="fixed bottom-20 right-3 left-3 sm:left-auto sm:right-6 sm:bottom-24 z-50 w-auto sm:w-[min(calc(100vw-3rem),400px)] max-w-[calc(100vw-1.5rem)] rounded-xl sm:rounded-2xl overflow-hidden border-2 border-cyan-500/40 bg-slate-800/98 backdrop-blur-xl shadow-2xl flex flex-col max-h-[min(75vh,520px)]"
             role="dialog"
             aria-label="Ask Crich AI chat"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-cyan-500/30 bg-slate-800/80">
-              <div className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center">
-                  <FaRobot className="w-4 h-4 text-cyan-400" />
+            <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-cyan-500/30 bg-slate-800/80">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center flex-shrink-0">
+                  <FaRobot className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400" />
                 </div>
-                <div>
-                  <p className="text-sm font-bold text-white">Ask Crich AI</p>
-                  <p className="text-xs text-gray-500">Ask about my experience & projects</p>
+                <div className="min-w-0">
+                  <p className="text-xs sm:text-sm font-bold text-white truncate">Ask Crich AI</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">Ask about my experience & projects</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-700/80 transition-colors"
+                className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-slate-700/80 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center flex-shrink-0"
                 aria-label="Close"
               >
                 <FaTimes className="w-5 h-5" />
@@ -132,16 +132,16 @@ const AskCrichWidget = () => {
 
             {/* Messages */}
             <div
-              className="flex-1 min-h-[240px] max-h-[320px] overflow-y-auto p-3 flex flex-col gap-3"
+              className="flex-1 min-h-[200px] sm:min-h-[240px] max-h-[min(50vh,320px)] sm:max-h-[320px] overflow-y-auto p-2.5 sm:p-3 flex flex-col gap-2.5 sm:gap-3"
               role="log"
               aria-live="polite"
             >
               {messages.length === 0 && (
                 <div className="flex-1 flex flex-col items-center justify-center py-8 text-center">
-                  <p className="text-gray-400 text-sm max-w-xs">
+                  <p className="text-gray-400 text-xs sm:text-sm max-w-xs px-2">
                     Ask anything about my experience, projects, or skills.
                   </p>
-                  <p className="text-gray-500 text-xs mt-2">e.g. &quot;What projects use LangChain?&quot;</p>
+                  <p className="text-gray-500 text-[10px] sm:text-xs mt-2">e.g. &quot;What projects use LangChain?&quot;</p>
                 </div>
               )}
 
@@ -166,7 +166,7 @@ const AskCrichWidget = () => {
                     </div>
                     <div
                       className={cn(
-                        'rounded-xl px-3 py-2 text-sm',
+                        'rounded-xl px-2.5 sm:px-3 py-2 text-xs sm:text-sm',
                         msg.role === 'user'
                           ? 'bg-cyan-500/20 border border-cyan-500/40 text-gray-100'
                           : 'bg-slate-700/50 border border-slate-600/50 text-gray-200'
@@ -197,7 +197,7 @@ const AskCrichWidget = () => {
             </div>
 
             {/* Input */}
-            <div className="p-3 border-t border-cyan-500/20 bg-slate-800/60">
+            <div className="p-2.5 sm:p-3 border-t border-cyan-500/20 bg-slate-800/60">
               <div className="flex gap-2">
                 <textarea
                   ref={inputRef}
@@ -207,7 +207,7 @@ const AskCrichWidget = () => {
                   placeholder="Ask about experience, projects, skills..."
                   rows={1}
                   disabled={loading}
-                  className="flex-1 min-h-[40px] max-h-24 px-3 py-2.5 rounded-xl bg-slate-800/90 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 resize-none disabled:opacity-60 text-sm"
+                  className="flex-1 min-h-[40px] max-h-24 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-slate-800/90 border border-cyan-500/30 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 resize-none disabled:opacity-60 text-sm"
                   aria-label="Message"
                 />
                 <motion.button
@@ -216,7 +216,7 @@ const AskCrichWidget = () => {
                   disabled={loading || !input.trim()}
                   whileHover={!loading && input.trim() ? { scale: 1.05 } : {}}
                   whileTap={!loading && input.trim() ? { scale: 0.98 } : {}}
-                  className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white flex items-center justify-center shadow-md hover:shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-shrink-0 w-10 h-10 min-w-[44px] min-h-[44px] rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white flex items-center justify-center shadow-md hover:shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label="Send"
                 >
                   <FaPaperPlane className="w-4 h-4" />

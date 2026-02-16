@@ -199,9 +199,9 @@ const Projects = () => {
       className="w-full max-w-xl mx-auto px-2 md:px-0 md:max-w-none scroll-mt-24"
       id="project-detail"
     >
-      <div className="bg-slate-800/80 backdrop-blur-sm rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-4 md:p-6 shadow-xl">
+      <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-3 sm:p-4 md:p-6 shadow-xl">
         <div className="flex flex-wrap items-baseline gap-2 mb-1">
-          <h3 className="font-display text-lg md:text-2xl font-semibold text-white">
+          <h3 className="font-display text-base sm:text-lg md:text-2xl font-semibold text-white">
             {currentProject.title}
           </h3>
           <span className="text-gray-500 text-xs font-medium">
@@ -269,7 +269,7 @@ const Projects = () => {
   ) : null
 
   return (
-    <div className="relative min-h-screen py-24 px-2 sm:px-3 md:px-4 overflow-x-hidden overflow-y-visible">
+    <div className="relative min-h-screen py-16 sm:py-20 md:py-24 px-3 sm:px-4 overflow-x-hidden overflow-y-visible">
       <div className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-cyan-500/5 blur-3xl pointer-events-none" aria-hidden />
       <div className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-amber-500/5 blur-3xl pointer-events-none" aria-hidden />
       <div className="max-w-[1440px] mx-auto relative flex flex-col z-10">
@@ -278,13 +278,13 @@ const Projects = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-6 sm:mb-8 md:mb-12"
         >
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
             Featured <span className="text-amber-400 font-display italic">Projects</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-2" />
-          <p className="text-gray-400 mt-4 max-w-xl mx-auto">
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-2" />
+          <p className="text-gray-400 text-sm sm:text-base mt-3 sm:mt-4 max-w-xl mx-auto px-1">
             Multi-agent systems, document AI, and computer vision.
           </p>
         </motion.div>
@@ -295,11 +295,11 @@ const Projects = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.3 }}
-          className="flex justify-center mb-8 md:mb-10"
+          className="flex justify-center mb-6 sm:mb-8 md:mb-10"
           role="tablist"
           aria-label="Project category filter"
         >
-          <div className="inline-flex p-1 rounded-xl bg-slate-800/80 border border-slate-600/50 shadow-inner">
+          <div className="inline-flex p-1 rounded-lg sm:rounded-xl bg-slate-800/80 border border-slate-600/50 shadow-inner">
             {FILTER_CATEGORIES.map((cat) => {
               const isActive = activeFilter === cat.id
               return (
@@ -311,7 +311,7 @@ const Projects = () => {
                   aria-label={`Show ${cat.label} projects`}
                   onClick={() => setActiveFilter(cat.id)}
                   whileTap={{ scale: 0.98 }}
-                  className={`relative px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 ${
+                  className={`relative px-3 py-2.5 sm:px-5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium min-h-[44px] flex items-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 ${
                     isActive
                       ? 'text-white'
                       : 'text-gray-400 hover:text-gray-300'
@@ -358,7 +358,7 @@ const Projects = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction > 0 ? -80 : 80 }}
                 transition={{ duration: 0.25 }}
-                className="w-[min(92vw,440px)] mx-auto"
+                className="w-[min(94vw,400px)] sm:w-[min(92vw,440px)] mx-auto"
               >
                 <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/60 shadow-xl bg-slate-800/95">
                   <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
@@ -380,8 +380,8 @@ const Projects = () => {
                       {projectTypes[filteredProjects[currentIndex].type].label}
                     </span>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-display text-base font-semibold text-white">{filteredProjects[currentIndex].title}</h3>
+                  <div className="p-3 sm:p-4">
+                    <h3 className="font-display text-sm sm:text-base font-semibold text-white">{filteredProjects[currentIndex].title}</h3>
                     <p className="text-cyan-400/90 text-xs mt-0.5 line-clamp-1">{filteredProjects[currentIndex].subtitle}</p>
                   </div>
                 </div>

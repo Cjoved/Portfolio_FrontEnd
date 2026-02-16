@@ -8,7 +8,7 @@ import { cn } from '../utils/cn'
 // Form ID from .env only — never commit the real ID to the project
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID || ''
 
-const inputBase = 'w-full px-4 py-3 bg-slate-800/40 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 transition-colors resize-none disabled:opacity-60'
+const inputBase = 'w-full px-4 py-3 text-base bg-slate-800/40 border border-cyan-500/30 rounded-lg text-white focus:outline-none focus:border-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 transition-colors resize-none disabled:opacity-60 min-h-[44px]'
 
 function ContactFormWithSpree() {
   const [state, handleSubmit] = useForm(FORMSPREE_ID)
@@ -30,19 +30,19 @@ function ContactFormWithSpree() {
 
   if (state.succeeded) {
     return (
-      <div className="min-h-screen py-24 px-4 bg-slate-900/30">
+      <div className="min-h-screen py-16 sm:py-24 px-4 sm:px-6 bg-slate-900/30">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-10 sm:mb-16"
           >
-            <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+            <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
               Get In <span className="text-amber-400 font-display italic">Touch</span>
             </h2>
-            <div className="w-24 h-1 bg-cyan-500 mx-auto mb-4" />
-            <p className="text-cyan-400 text-lg font-medium">
+            <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-4" />
+            <p className="text-cyan-400 text-base sm:text-lg font-medium">
               Thanks for your message! I&apos;ll get back to you soon.
             </p>
             <p className="text-gray-400 mt-2">
@@ -58,34 +58,34 @@ function ContactFormWithSpree() {
   }
 
   return (
-    <div className="min-h-screen py-24 px-4 bg-slate-900/30">
+    <div className="min-h-screen py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-12 md:mb-16"
         >
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
             Get In <span className="text-amber-400 font-display italic">Touch</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-4"></div>
-          <p className="text-gray-400 text-lg">
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-4"></div>
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg px-1">
             Have a project in mind? Let&apos;s collaborate and build something amazing together!
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-10 md:gap-12">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="space-y-4 sm:space-y-6"
           >
-            <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6">Contact Information</h3>
 
             {contactInfo.map((info, index) => (
               <motion.a
@@ -96,20 +96,20 @@ function ContactFormWithSpree() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 whileHover={{ x: 10 }}
-                className="flex items-center gap-4 p-4 bg-slate-800/40 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 transition-colors group"
+                className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-slate-800/40 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 transition-colors group min-h-[52px]"
               >
-                <div className="text-2xl text-cyan-400 group-hover:scale-110 transition-transform">
+                <div className="text-xl sm:text-2xl text-cyan-400 group-hover:scale-110 transition-transform flex-shrink-0">
                   <info.icon />
                 </div>
-                <span className="text-gray-300 group-hover:text-white transition-colors">
+                <span className="text-gray-300 text-sm sm:text-base group-hover:text-white transition-colors break-all">
                   {info.text}
                 </span>
               </motion.a>
             ))}
 
-            <div className="pt-6">
-              <h4 className="text-xl font-semibold text-white mb-4">Follow Me</h4>
-              <div className="flex gap-4">
+            <div className="pt-4 sm:pt-6">
+              <h4 className="text-base sm:text-xl font-semibold text-white mb-3 sm:mb-4">Follow Me</h4>
+              <div className="flex gap-3 sm:gap-4">
                 {socialLinks.map((social, index) => (
                   <motion.a
                     key={index}
@@ -118,7 +118,7 @@ function ContactFormWithSpree() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.2, rotate: 5 }}
                     whileTap={{ scale: 0.9 }}
-                    className="w-12 h-12 bg-slate-800/40 rounded-lg flex items-center justify-center text-2xl text-gray-400 hover:text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 transition-all"
+                    className="w-11 h-11 sm:w-12 sm:h-12 bg-slate-800/40 rounded-lg flex items-center justify-center text-xl sm:text-2xl text-gray-400 hover:text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 transition-all min-w-[44px] min-h-[44px]"
                   >
                     <social.icon />
                   </motion.a>
@@ -137,7 +137,7 @@ function ContactFormWithSpree() {
             className="space-y-6"
           >
             <div>
-              <label htmlFor="name" className="block text-gray-300 mb-2">
+              <label htmlFor="name" className="block text-gray-300 text-sm sm:text-base mb-2">
                 Name
               </label>
               <input
@@ -153,7 +153,7 @@ function ContactFormWithSpree() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-gray-300 text-sm sm:text-base mb-2">
                 Email
               </label>
               <input
@@ -169,13 +169,13 @@ function ContactFormWithSpree() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-gray-300 mb-2">
+              <label htmlFor="message" className="block text-gray-300 text-sm sm:text-base mb-2">
                 Message
               </label>
               <textarea
                 id="message"
                 name="message"
-                rows="6"
+                rows="5"
                 placeholder="Your Message"
                 disabled={state.submitting}
                 className={cn(inputBase, state.errors?.length && 'border-red-500/60')}
@@ -238,45 +238,45 @@ function ContactFormFallback() {
     setSubmitting(false)
   }
   return (
-    <div className="min-h-screen py-24 px-4 bg-slate-900/30">
+    <div className="min-h-screen py-16 sm:py-24 px-4 sm:px-6 bg-slate-900/30">
       <div className="max-w-7xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
             Get In <span className="text-amber-400 font-display italic">Touch</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-4" />
-          <p className="text-gray-400 text-lg">Have a project in mind? Let&apos;s collaborate and build something amazing together!</p>
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-4" />
+          <p className="text-gray-400 text-sm sm:text-base md:text-lg px-1">Have a project in mind? Let&apos;s collaborate and build something amazing together!</p>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-12">
-          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-6">
-            <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
+          <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="space-y-4 sm:space-y-6">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6">Contact Information</h3>
             {contactInfo.map((info, i) => (
-              <motion.a key={i} href={info.link} className="flex items-center gap-4 p-4 bg-slate-800/40 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 transition-colors group">
-                <div className="text-2xl text-cyan-400"><info.icon /></div>
-                <span className="text-gray-300 group-hover:text-white">{info.text}</span>
+              <motion.a key={i} href={info.link} className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-slate-800/40 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 transition-colors group min-h-[52px]">
+                <div className="text-xl sm:text-2xl text-cyan-400 flex-shrink-0"><info.icon /></div>
+                <span className="text-gray-300 text-sm sm:text-base group-hover:text-white break-all">{info.text}</span>
               </motion.a>
             ))}
-            <div className="pt-6">
-              <h4 className="text-xl font-semibold text-white mb-4">Follow Me</h4>
-              <div className="flex gap-4">
+            <div className="pt-4 sm:pt-6">
+              <h4 className="text-base sm:text-xl font-semibold text-white mb-3 sm:mb-4">Follow Me</h4>
+              <div className="flex gap-3 sm:gap-4">
                 {socialLinks.map((s, i) => (
-                  <motion.a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-slate-800/40 rounded-lg flex items-center justify-center text-2xl text-gray-400 hover:text-cyan-400 border border-cyan-500/30" whileHover={{ scale: 1.1 }}><s.icon /></motion.a>
+                  <motion.a key={i} href={s.href} target="_blank" rel="noopener noreferrer" className="w-11 h-11 sm:w-12 sm:h-12 min-w-[44px] min-h-[44px] bg-slate-800/40 rounded-lg flex items-center justify-center text-xl sm:text-2xl text-gray-400 hover:text-cyan-400 border border-cyan-500/30" whileHover={{ scale: 1.1 }}><s.icon /></motion.a>
                 ))}
               </div>
             </div>
           </motion.div>
           <motion.form initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} onSubmit={onMailtoSubmit} className="space-y-6">
             <div>
-              <label htmlFor="fallback-name" className="block text-gray-300 mb-2">Name</label>
+              <label htmlFor="fallback-name" className="block text-gray-300 text-sm sm:text-base mb-2">Name</label>
               <input type="text" id="fallback-name" name="name" placeholder="Your Name" disabled={submitting} className={inputBase} required minLength={2} />
             </div>
             <div>
-              <label htmlFor="fallback-email" className="block text-gray-300 mb-2">Email</label>
+              <label htmlFor="fallback-email" className="block text-gray-300 text-sm sm:text-base mb-2">Email</label>
               <input type="email" id="fallback-email" name="email" placeholder="your.email@example.com" disabled={submitting} className={inputBase} required />
             </div>
             <div>
-              <label htmlFor="fallback-message" className="block text-gray-300 mb-2">Message</label>
-              <textarea id="fallback-message" name="message" rows="6" placeholder="Your Message" disabled={submitting} className={inputBase} required minLength={10} />
+              <label htmlFor="fallback-message" className="block text-gray-300 text-sm sm:text-base mb-2">Message</label>
+              <textarea id="fallback-message" name="message" rows="5" placeholder="Your Message" disabled={submitting} className={inputBase} required minLength={10} />
             </div>
             <motion.button type="submit" disabled={submitting} whileHover={!submitting ? { scale: 1.02 } : {}} whileTap={!submitting ? { scale: 0.98 } : {}} className="w-full px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold shadow-lg hover:shadow-cyan-500/30 transition-shadow disabled:opacity-70 disabled:cursor-not-allowed">
               {submitting ? 'Opening...' : 'Send Message'}

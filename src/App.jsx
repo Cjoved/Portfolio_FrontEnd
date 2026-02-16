@@ -127,24 +127,24 @@ function App() {
           <AskCrichWidget />
           <ScrollToTop />
 
-          <footer className="py-10 border-t border-cyan-500/20 bg-slate-950/60">
-            <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <p className="text-gray-500 text-sm text-center sm:text-left">
+          <footer className="py-6 sm:py-8 md:py-10 px-4 border-t border-cyan-500/20 bg-slate-950/60">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+              <p className="text-gray-500 text-xs sm:text-sm text-center sm:text-left">
                 &copy; 2025 Crich Joved Veridiano · Junior AI Engineer
               </p>
-              <div className="flex items-center gap-6" role="navigation" aria-label="Footer links">
-                <a href="https://github.com/Cjoved" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors text-sm py-1">
+              <div className="flex items-center gap-4 sm:gap-6" role="navigation" aria-label="Footer links">
+                <a href="https://github.com/Cjoved" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors text-xs sm:text-sm py-2 min-h-[44px] flex items-center">
                   GitHub
                 </a>
-                <a href="https://linkedin.com/in/crichveridiano" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors text-sm py-1">
+                <a href="https://linkedin.com/in/crichveridiano" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors text-xs sm:text-sm py-2 min-h-[44px] flex items-center">
                   LinkedIn
                 </a>
-                <a href="#home" className="text-gray-500 hover:text-cyan-400 transition-colors text-sm py-1">
+                <a href="#home" className="text-gray-500 hover:text-cyan-400 transition-colors text-xs sm:text-sm py-2 min-h-[44px] flex items-center">
                   Back to top
                 </a>
               </div>
             </div>
-            <p className="text-gray-600 text-xs mt-4 text-center">Built with React, Vite, Tailwind & Framer Motion</p>
+            <p className="text-gray-600 text-[10px] sm:text-xs mt-3 sm:mt-4 text-center">Built with React, Vite, Tailwind & Framer Motion</p>
           </footer>
         </div>
       </LenisProvider>

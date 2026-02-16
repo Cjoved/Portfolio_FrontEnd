@@ -29,14 +29,14 @@ const Navbar = ({ activeSection }) => {
       className="fixed top-0 w-full z-50 bg-slate-950/90 backdrop-blur-md border-b border-cyan-500/20"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14 sm:h-16">
           <motion.a
             href="#home"
             onClick={(e) => { e.preventDefault(); scrollToSection('home') }}
             whileHover={{ scale: 1.02 }}
-            className="flex items-center gap-2 text-xl font-bold text-white"
+            className="flex items-center gap-1.5 sm:gap-2 text-base sm:text-lg md:text-xl font-bold text-white"
           >
-            <img src={getImageUrl('/logo_fqqftz.png')} alt="Crich Veridiano" className="h-8 w-8 rounded object-contain" />
+            <img src={getImageUrl('/logo_fqqftz.png')} alt="Crich Veridiano" className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded object-contain" />
             <span className="font-extrabold">Crich</span>
             <span className="text-cyan-400 font-semibold">Veridiano</span>
           </motion.a>
@@ -82,7 +82,7 @@ const Navbar = ({ activeSection }) => {
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-label={isOpen ? 'Close menu' : 'Open menu'}
-            className="md:hidden text-gray-300 hover:text-cyan-400 p-2"
+            className="md:hidden text-gray-300 hover:text-cyan-400 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center -mr-1"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
@@ -102,26 +102,26 @@ const Navbar = ({ activeSection }) => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden py-4 space-y-2 border-t border-cyan-500/20"
+            className="md:hidden py-3 space-y-1 border-t border-cyan-500/20"
           >
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
                 className={cn(
-                  'block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium',
+                  'block w-full text-left px-4 py-3 rounded-lg text-base font-medium min-h-[44px] flex items-center',
                   activeSection === item.id ? 'text-cyan-400 bg-cyan-500/10' : 'text-gray-300 hover:text-white hover:bg-slate-800/50'
                 )}
               >
                 {item.name}
               </button>
             ))}
-            <a href={getResumeUrl()} target="_blank" rel="noopener noreferrer" download="Crich_Veridiano_Resume.pdf" className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-cyan-400">
+            <a href={getResumeUrl()} target="_blank" rel="noopener noreferrer" download="Crich_Veridiano_Resume.pdf" className="block w-full text-left px-4 py-3 rounded-lg text-base font-medium text-cyan-400 min-h-[44px] flex items-center">
               Download Resume
             </a>
             <button
               onClick={() => scrollToSection('contact')}
-              className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
+              className="block w-full text-left px-4 py-3 rounded-lg text-base font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white min-h-[44px] flex items-center"
             >
               Contact Us
             </button>
