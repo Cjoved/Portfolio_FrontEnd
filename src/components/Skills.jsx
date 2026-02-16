@@ -79,29 +79,59 @@ const skillCategories = [
 ]
 
 // Count-up animation for percentage when in view
-function AnimatedPercent({ percent, delay = 0 }) {
+function AnimatedPercent({ percent }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-50px' })
+  const startedRef = useRef(false)
   const [count, setCount] = useState(0)
+  const [trigger, setTrigger] = useState(false)
+  // amount: 0 = trigger when any part visible; margin 0 so mobile viewport triggers
+  const isInView = useInView(ref, { once: true, amount: 0, margin: '0px' })
+
   useEffect(() => {
-    if (!isInView) return
-    const duration = 1200
-    const steps = 30
-    const step = percent / steps
-    const interval = duration / steps
-    let current = 0
-    const timer = setInterval(() => {
-      current += step
-      if (current >= percent) {
-        setCount(percent)
-        clearInterval(timer)
-      } else {
-        setCount(Math.floor(current))
-      }
-    }, interval)
-    return () => clearInterval(timer)
-  }, [isInView, percent])
-  return <span ref={ref}>{count}%</span>
+    if (trigger && !startedRef.current) {
+      startedRef.current = true
+      const duration = 1200
+      const steps = 30
+      const step = percent / steps
+      const interval = duration / steps
+      let current = 0
+      const timer = setInterval(() => {
+        current += step
+        if (current >= percent) {
+          setCount(percent)
+          clearInterval(timer)
+        } else {
+          setCount(Math.floor(current))
+        }
+      }, interval)
+      return () => clearInterval(timer)
+    }
+  }, [trigger, percent])
+
+  useEffect(() => {
+    if (isInView) setTrigger(true)
+  }, [isInView])
+
+  // Fallback for mobile: IntersectionObserver can fire late; check when element is in viewport
+  useEffect(() => {
+    if (trigger) return
+    const check = () => {
+      const el = ref.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const windowH = window.innerHeight ?? document.documentElement.clientHeight
+      if (rect.top < windowH && rect.bottom > 0) setTrigger(true)
+    }
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    const t = setTimeout(check, 400)
+    return () => {
+      window.removeEventListener('scroll', check)
+      clearTimeout(t)
+    }
+  }, [trigger])
+
+  return <span ref={ref} className="inline-block min-w-[2.5ch]">{count}%</span>
 }
 
 const Skills = () => {
