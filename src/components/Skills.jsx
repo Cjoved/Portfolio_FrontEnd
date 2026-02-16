@@ -32,22 +32,22 @@ const Skills = () => {
   }
 
   return (
-    <div className="relative min-h-screen py-24 px-4 bg-slate-900/30 overflow-hidden">
+    <div className="relative min-h-screen py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-slate-900/30 overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
         >
-          <h2 className="text-section-title md:text-section-title-lg font-bold text-white mb-4">
+          <h2 className="text-section-title sm:text-section-title-md md:text-section-title-lg lg:text-section-title-xl font-bold text-white mb-3 sm:mb-4">
             Skills & <span className="text-amber-400 font-display italic">Technologies</span>
           </h2>
-          <div className="w-24 h-1 bg-cyan-500 mx-auto mb-2"></div>
+          <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-2"></div>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-6xl mx-auto">
           {skillCategories.map((category, categoryIndex) => (
             <motion.div
               key={categoryIndex}
@@ -56,9 +56,9 @@ const Skills = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="bg-slate-800/40 backdrop-blur-sm rounded-xl p-6 border border-cyan-500/30 hover:border-cyan-400/50 transition-all"
+              className="bg-slate-800/40 backdrop-blur-sm rounded-xl p-4 sm:p-5 md:p-6 border border-cyan-500/30 hover:border-cyan-400/50 transition-all"
             >
-              <h3 className="text-xl font-semibold mb-4 text-cyan-400">
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 text-cyan-400">
                 {category.title}
               </h3>
               <motion.div
@@ -66,14 +66,14 @@ const Skills = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
-                className="flex flex-wrap gap-2"
+                className="flex flex-wrap gap-1.5 sm:gap-2"
               >
                 {category.skills.map((skill, skillIndex) => (
                   <motion.span
                     key={skillIndex}
                     variants={itemVariants}
                     whileHover={{ scale: 1.05 }}
-                    className="px-4 py-2 rounded-full text-sm font-medium bg-slate-700/80 text-gray-300 border border-cyan-500/30 hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
+                    className="px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-slate-700/80 text-gray-300 border border-cyan-500/30 hover:border-cyan-400/50 hover:text-cyan-300 transition-colors"
                   >
                     {skill}
                   </motion.span>

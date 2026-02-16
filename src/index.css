@@ -10,15 +10,20 @@
   html {
     @apply scroll-smooth;
     min-height: 100%;
+    min-height: 100dvh; /* mobile: fill visible viewport */
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
-    /* Same dark bg as app so no white shows on mobile when opening */
-    background: linear-gradient(to bottom, rgb(2 6 23), rgb(23 37 84), rgb(2 6 23));
+    /* Same dark bg as app so no white shows on mobile at bottom/sides */
+    background-color: rgb(2 6 23);
+    background-image: linear-gradient(to bottom, rgb(2 6 23), rgb(23 37 84), rgb(2 6 23));
+    background-attachment: fixed; /* keeps bg covering viewport when scrolling on mobile */
   }
 
   body {
     @apply m-0 min-h-screen;
+    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
     max-width: 100vw;
     min-width: 320px;
@@ -26,17 +31,23 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Prevent iOS zoom on input focus – ensure inputs use font-size at least 16px */
     font-size: 16px;
+    /* No white strip at bottom on CP – match app dark */
+    background-color: rgb(2 6 23);
+    background-image: linear-gradient(to bottom, rgb(2 6 23), rgb(23 37 84), rgb(2 6 23));
+    background-attachment: fixed;
   }
 
   #root {
     width: 100%;
     max-width: 100vw;
     min-width: 320px;
+    min-height: 100%;
+    min-height: 100dvh;
     overflow-x: hidden;
     padding-left: env(safe-area-inset-left, 0);
     padding-right: env(safe-area-inset-right, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
   /* Keyboard / focus visibility (accessibility) */

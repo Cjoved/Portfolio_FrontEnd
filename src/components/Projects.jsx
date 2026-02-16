@@ -349,7 +349,9 @@ const Projects = () => {
         {/* Mobile: card FIRST (sa itaas), then explanation sa ilalim */}
         {hasProjects && (
         <div className="flex flex-col md:hidden gap-8">
-          <div className="relative overflow-hidden order-1">
+          <div className="relative order-1 px-2 sm:px-3">
+            {/* overflow-x-hidden only so slide animation doesn't scroll; card stays inside so right border visible */}
+            <div className="overflow-x-hidden">
             <AnimatePresence mode="wait" custom={direction} initial={false}>
               <motion.div
                 key={currentIndex}
@@ -358,9 +360,9 @@ const Projects = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction > 0 ? -80 : 80 }}
                 transition={{ duration: 0.25 }}
-                className="w-[min(94vw,400px)] sm:w-[min(92vw,440px)] mx-auto"
+                className="w-full max-w-[400px] mx-auto"
               >
-                <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/60 shadow-xl bg-slate-800/95">
+                <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/60 shadow-xl bg-slate-800/95 box-border">
                   <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
                     {(filteredProjects[currentIndex].image || filteredProjects[currentIndex].images?.length) ? (
                       <ProjectImage project={filteredProjects[currentIndex]} />
@@ -387,7 +389,8 @@ const Projects = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
-            <div className="flex justify-between items-center mt-4 px-2">
+            </div>
+            <div className="flex justify-between items-center mt-4 px-0">
               <motion.button
                 type="button"
                 onClick={goPrev}
