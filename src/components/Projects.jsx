@@ -1,106 +1,19 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaGithub, FaExternalLinkAlt, FaChevronLeft, FaChevronRight, FaRobot } from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getImageUrl } from '../utils/cloudinary'
+import gsap from 'gsap'
+import { projects, projectTypes, TAG_CLASS, FILTER_CATEGORIES } from '../data/projectsData'
 
-const CARD_WIDTH_DESKTOP = 400
-const CARD_OVERLAP_DESKTOP = 100
-const STEP_DESKTOP = CARD_WIDTH_DESKTOP - CARD_OVERLAP_DESKTOP
+// Desktop carousel — maximized space
+const CARD_WIDTH_DESKTOP = 450
+const CARD_GAP_DESKTOP = 32
+const VIEWPORT_W_DESKTOP = 1100
 
-const projectTypes = {
-  professional: { label: 'Professional', class: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' },
-  academic: { label: 'Academic', class: 'bg-slate-600/50 text-gray-300 border-slate-500/50' },
-  internship: { label: 'Internship', class: 'bg-slate-600/50 text-gray-300 border-slate-500/50' },
-  personal: { label: 'Personal', class: 'bg-amber-500/20 text-amber-400 border-amber-500/40' },
-}
-const TAG_CLASS = 'bg-violet-700/40 text-violet-100 border-violet-500/60'
-
-const FILTER_CATEGORIES = [
-  { id: 'professional', label: 'Professional' },
-  { id: 'academic', label: 'Academic' },
-  { id: 'personal', label: 'Personal' },
-]
-
-const projects = [
-  {
-    title: 'Agentic AI Survey System',
-    subtitle: 'AI-Powered Survey Generation & Analysis Platform',
-    type: 'professional',
-    image: '/projects/survey-system.jpg',
-    description: 'Production-ready FastAPI backend with multi-agent architecture (4 specialized agents) automating end-to-end survey lifecycle: conversational generation, document extraction, knowledge-base search, and response analysis. LangGraph-based multi-step agentic workflow (9 stages) with episodic memory. Multi-collection vector database (Qdrant) with hybrid semantic+keyword search and PostgreSQL. Conversational chat with PostgreSQL-backed memory, LRU caching, multi-user support. Statistical and sentiment analysis pipelines with LLM-generated executive summaries. Langfuse for observability, prompt management, A/B testing, API auth, and rate limiting.',
-    tech: ['Python', 'FastAPI', 'LangChain', 'LangGraph', 'OpenRouter', 'Google Gemini', 'Qdrant', 'PostgreSQL', 'spaCy', 'Docling', 'Tesseract', 'Docker', 'Langfuse'],
-    tag: 'Agentic AI / Multi-Agent',
-    github: 'https://github.com/Cjoved',
-    demo: null,
-  },
-  {
-    title: 'Agentic AI Evaluator',
-    subtitle: 'Multi-Agent Agricultural Trial Evaluation System',
-    type: 'professional',
-    image: '/eval1_of3csr.png',
-    images: ['/eval1_of3csr.png', '/eval2_qot7rd.png', '/eval3_kp3byo.png', '/eval4_ggk8ir.png', '/eval5_vqqphp.png'],
-    description: '8-stage LangGraph workflow to process agricultural demo trial PDFs with quality gates and automatic retries. CrewAI multi-agent evaluation layer (4 specialized agents) with confidence-scored quality assessment. Hybrid semantic + keyword search over Qdrant with ensemble retriever. Conversational AI agent with 30+ specialized tools and PostgreSQL-backed memory, supporting Taglish/Filipino/English. Redis + ARQ background workers for async job processing, API authentication, rate limiting, and full LLM observability.',
-    tech: ['Python', 'FastAPI', 'LangGraph', 'CrewAI', 'LangChain', 'Google Gemini', 'OpenRouter', 'Qdrant', 'PostgreSQL', 'Redis/ARQ', 'Docker', 'Langfuse'],
-    tag: 'Agentic AI / Multi-Agent',
-    github: 'https://github.com/Cjoved',
-    demo: null,
-  },
-  {
-    title: 'Black Sigatoka Early Stage Detection System',
-    subtitle: 'Banana Leaf Disease Detection using Computer Vision',
-    type: 'professional',
-    image: '/projects/black-sigatoka.jpg',
-    description: 'End-to-end ML pipeline for 7 disease stages with strict image quality checks, intelligent 256×256 tiling, and stratified train-val-test split. YOLO12n model on combined dataset with unified 7-class mapping, real-time augmentation, and hyperparameter tuning (mAP50, precision, recall, F1). FastAPI inference service with validation, error handling, and model caching. Docker and Docker Compose for production deployment.',
-    tech: ['Python', 'Ultralytics YOLO (YOLO12n)', 'PyTorch', 'OpenCV', 'Pillow', 'FastAPI', 'Docker', 'Jupyter'],
-    tag: 'Computer Vision & Object Detection',
-    github: 'https://github.com/Cjoved',
-    demo: null,
-  },
-  {
-    title: 'RHive (Research Hive)',
-    subtitle: 'Thesis/Capstone Management System',
-    type: 'academic',
-    image: '/rhive1_wxjwpl.png',
-    images: ['/rhive1_wxjwpl.png', '/rhive2_c0dpbd.png', '/rhive3_qt2y1n.png', '/rhive4_irbkdg.png'],
-    description: 'Led design and implementation of IMRaD manuscript generation module, transforming raw research content into structured academic drafts. NLP-powered pipeline (Python + FastAPI) with preprocessing, section detection, and LLM-based prompts for IMRaD formatting. Integrated with main RHive web platform for automated manuscript formatting. Thesis system achieved ISO 25010:2023 software quality rating of 4.4 (Effective/Highly Effective) for usability, reliability, and security.',
-    tech: ['Vite React', 'Tailwind CSS', 'Node.js', 'Express.js', 'Python (FastAPI)', 'Firestore', 'NLP/LLM'],
-    tag: 'NLP & LLM Document Formatting',
-    github: 'https://github.com/Cjoved/imrad-gen',
-    demo: null,
-  },
-  {
-    title: 'ReminderU',
-    subtitle: 'Schedule & reminder app with intent-based chatbot and TTS alarms',
-    type: 'academic',
-    image: '/remideru1_rzfj9q.png',
-    images: ['/remideru1_rzfj9q.png', '/remideru2_knlpbd.png', '/reminderu3_lkbwao.png'],
-    description: "ReminderU has its own model for its chatbot feature using a Neural Network built with PyTorch, NLTK, and spaCy in Python. The model is served via a dedicated API that the mobile app calls to predict the user's intent. The app uses a custom dataset (AI-assisted) of natural scheduling statements, split into intents; the model only predicts intent, and the app then calls different API endpoints to add, update, or delete schedules. The alarm uses text-to-speech (expo-speech / react-native-tts) to remind the user of upcoming schedules—when and where they occur.",
-    tech: ['Python', 'PyTorch', 'NLTK', 'spaCy', 'React Native', 'Expo', 'expo-speech', 'react-native-tts', 'Supabase', 'Express', 'TypeScript'],
-    tag: 'Intent NLP & TTS',
-    github: 'https://github.com/Cjoved',
-    demo: null,
-  },
-  {
-    title: 'Conversational Support & Ticketing System',
-    subtitle: 'AI Intern – PROMPTING_AI AGENT',
-    type: 'internship',
-    image: '/support1_garqwr.png',
-    images: ['/support1_garqwr.png', '/support2_o8qevh.png', '/support3_tq2fiw.png'],
-    description: 'FastAPI + LangChain support agent routing user queries by intent and tone across multiple LLMs via OpenRouter. Intent and tone detection pipeline with LLM prompt design and retry/fallback logic. Ticketing workflow with automatic ticket creation (ID, priority, category, status) and database integration. /chat API with optional word-by-word streaming responses and cache management endpoints.',
-    tech: ['Python', 'FastAPI', 'LangChain', 'OpenRouter (Mistral, DeepSeek, OpenChat)', 'MySQL', 'Pydantic'],
-    tag: 'Conversational AI & LLM',
-    github: 'https://github.com/Intern94/chat_support',
-    demo: null,
-  },
-]
-
-// Offset so selected card center aligns with flex container (viewport) center
-const getTrackOffset = (index, count) => {
-  const n = count || 1
-  const trackWidth = (n - 1) * STEP_DESKTOP + CARD_WIDTH_DESKTOP
-  const selectedCardCenter = index * STEP_DESKTOP + CARD_WIDTH_DESKTOP / 2
-  return trackWidth / 2 - selectedCardCenter
-}
+// Mobile carousel — compact but readable
+const CARD_WIDTH_MOBILE = 270
+const CARD_GAP_MOBILE = 14
+const VIEWPORT_W_MOBILE = 320
 
 const SLIDESHOW_INTERVAL_MS = 3500
 
@@ -120,7 +33,6 @@ function ProjectImage({ project, className = 'w-full h-full object-cover' }) {
   const rawSrc = images ? images[slideIndex] : singleImage
   if (!rawSrc) return null
   const src = getImageUrl(rawSrc, { quality: 'auto', fetchFormat: 'auto' })
-  const isCloudinary = src.startsWith('https://res.cloudinary.com/')
   const showRobotPlaceholder = (e) => {
     const el = e.target
     el.style.display = 'none'
@@ -155,7 +67,8 @@ const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('professional')
   const [currentIndex, setCurrentIndex] = useState(0)
   const [descriptionExpanded, setDescriptionExpanded] = useState(false)
-  const [direction, setDirection] = useState(0)
+  const trackDesktopRef = useRef(null)
+  const trackMobileRef = useRef(null)
 
   const filteredProjects = projects.filter((p) => {
     if (activeFilter === 'academic') return p.type === 'academic' || p.type === 'internship'
@@ -174,20 +87,62 @@ const Projects = () => {
 
   const goNext = () => {
     if (filteredProjects.length <= 1) return
-    setDirection(1)
     setDescriptionExpanded(false)
     setCurrentIndex((i) => (i + 1) % filteredProjects.length)
   }
   const goPrev = () => {
     if (filteredProjects.length <= 1) return
-    setDirection(-1)
     setDescriptionExpanded(false)
     setCurrentIndex((i) => (i - 1 + filteredProjects.length) % filteredProjects.length)
   }
 
+  const CAROUSEL_PADDING = 2
+
+  // Desktop GSAP
+  useEffect(() => {
+    const el = trackDesktopRef.current
+    if (!el || filteredProjects.length === 0) return
+
+    const step = CARD_WIDTH_DESKTOP + CARD_GAP_DESKTOP
+    const centerIndex = CAROUSEL_PADDING + currentIndex
+    const offset = VIEWPORT_W_DESKTOP / 2 - CARD_WIDTH_DESKTOP / 2 - centerIndex * step
+
+    gsap.to(el, {
+      x: offset,
+      duration: 0.6,
+      ease: 'power2.out'
+    })
+  }, [currentIndex, filteredProjects.length])
+
+  // Mobile GSAP
+  useEffect(() => {
+    const el = trackMobileRef.current
+    if (!el || filteredProjects.length === 0) return
+
+    const step = CARD_WIDTH_MOBILE + CARD_GAP_MOBILE
+    const centerIndex = CAROUSEL_PADDING + currentIndex
+    const offset = VIEWPORT_W_MOBILE / 2 - CARD_WIDTH_MOBILE / 2 - centerIndex * step
+
+    gsap.to(el, {
+      x: offset,
+      duration: 0.5,
+      ease: 'power2.out'
+    })
+  }, [currentIndex, filteredProjects.length])
+
   const currentProject = filteredProjects[currentIndex]
-  const descriptionLong = currentProject?.description?.length > 320
   const hasProjects = filteredProjects.length > 0
+
+  const getCircularArray = (arr, padding = 2) => {
+    if (arr.length === 0) return []
+    const n = arr.length
+    const result = [...arr]
+    for (let i = 0; i < padding; i++) {
+      result.unshift(arr[(n - 1 - i + n) % n])
+      result.push(arr[i % n])
+    }
+    return result
+  }
 
   const DescriptionPanel = () =>
     currentProject ? (
@@ -196,73 +151,59 @@ const Projects = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-xl mx-auto px-2 md:px-0 md:max-w-none scroll-mt-24"
-      id="project-detail"
+      className="w-full"
     >
-      <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-3 sm:p-4 md:p-6 shadow-xl">
-        <div className="flex flex-wrap items-baseline gap-2 mb-1">
-          <h3 className="font-display text-base sm:text-lg md:text-2xl font-semibold text-white">
-            {currentProject.title}
-          </h3>
-          <span className="text-gray-500 text-xs font-medium">
-            {currentIndex + 1} of {filteredProjects.length}
-          </span>
-        </div>
-        {currentProject.subtitle && (
-          <p className="text-cyan-400 text-sm font-medium mb-4">
-            {currentProject.subtitle}
-          </p>
-        )}
-        <div className="border-t border-slate-600/50 pt-4">
-          <p
-            className={`text-gray-300 text-sm md:text-base leading-relaxed ${descriptionExpanded ? '' : 'line-clamp-6 md:line-clamp-8'}`}
-          >
+      <div className="bg-slate-800/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border-l-4 border-l-cyan-400/80 border border-cyan-500/30 p-2.5 sm:p-4 md:p-5 shadow-xl">
+        <div className="flex flex-col gap-1.5 sm:gap-3 md:gap-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-3">
+            <div className="min-w-0">
+              <h3 className="font-display text-sm sm:text-lg font-semibold text-white leading-tight">
+                {currentProject.title}
+              </h3>
+              {currentProject.subtitle && (
+                <span className="text-cyan-400/90 text-xs sm:text-sm font-medium block sm:inline mt-0.5 sm:mt-0">
+                  — {currentProject.subtitle}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <motion.a
+                href={currentProject.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-cyan-500/25 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/35 hover:text-white transition-colors font-semibold text-xs sm:text-sm"
+              >
+                <FaGithub className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> View code
+              </motion.a>
+              {currentProject.demo && (
+                <motion.a
+                  href={currentProject.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-gray-400 hover:text-cyan-400 border border-slate-600 hover:border-cyan-500/40 transition-colors text-xs sm:text-sm"
+                >
+                  <FaExternalLinkAlt className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Demo
+                </motion.a>
+              )}
+            </div>
+          </div>
+          <p className="text-gray-300 text-xs sm:text-sm leading-relaxed line-clamp-none md:line-clamp-4">
             {currentProject.description}
           </p>
-          {descriptionLong && (
-            <button
-              type="button"
-              onClick={() => setDescriptionExpanded((e) => !e)}
-              aria-expanded={descriptionExpanded}
-              className="mt-2 text-cyan-400 text-sm font-medium hover:text-cyan-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800 rounded"
-            >
-              {descriptionExpanded ? 'Show less' : 'Read more'}
-            </button>
-          )}
-        </div>
-        <p className="text-gray-500 text-xs font-medium mt-5 mb-2 uppercase tracking-wider">Tech</p>
-        <div className="flex flex-wrap gap-2">
-          {currentProject.tech.map((tech, ti) => (
-            <span
-              key={ti}
-              className="px-3 py-1.5 rounded-lg text-xs bg-slate-700/90 text-gray-300 border border-slate-600/50"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-        <div className="flex flex-wrap gap-3 mt-6">
-          <motion.a
-            href={currentProject.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500/25 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/35 hover:text-white transition-colors font-semibold text-sm"
-          >
-            <FaGithub className="w-4 h-4" /> View code
-          </motion.a>
-          {currentProject.demo && (
-            <motion.a
-              href={currentProject.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }}
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl text-gray-400 hover:text-cyan-400 border border-slate-600 hover:border-cyan-500/40 transition-colors text-sm"
-            >
-              <FaExternalLinkAlt className="w-4 h-4" /> Demo
-            </motion.a>
-          )}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <span className="text-gray-500 text-[10px] sm:text-xs font-medium uppercase tracking-wider">Tech:</span>
+            {currentProject.tech.map((tech, ti) => (
+              <span
+                key={ti}
+                className="px-2 py-0.5 rounded text-[10px] sm:text-xs bg-slate-700/90 text-gray-300 border border-slate-600/50"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </motion.div>
@@ -289,7 +230,7 @@ const Projects = () => {
           </p>
         </motion.div>
 
-        {/* Segmented filter: Professional | Academic | Personal */}
+        {/* Filter tabs */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -312,9 +253,7 @@ const Projects = () => {
                   onClick={() => setActiveFilter(cat.id)}
                   whileTap={{ scale: 0.98 }}
                   className={`relative px-3 py-2.5 sm:px-5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium min-h-[44px] flex items-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 ${
-                    isActive
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-gray-300'
+                    isActive ? 'text-white' : 'text-gray-400 hover:text-gray-300'
                   }`}
                 >
                   {isActive && (
@@ -331,7 +270,7 @@ const Projects = () => {
           </div>
         </motion.div>
 
-        {/* Empty state for Personal (no projects yet) */}
+        {/* Empty state */}
         {!hasProjects && (
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -340,102 +279,166 @@ const Projects = () => {
             className="text-center py-16 md:py-24 px-4 rounded-2xl border border-slate-600/50 bg-slate-800/40 backdrop-blur-sm"
           >
             <p className="text-gray-400 text-lg md:text-xl font-medium">Soon to be added</p>
-            <p className="text-gray-500 text-sm mt-2 max-w-sm mx-auto">
-              Personal projects will appear here.
-            </p>
+            <p className="text-gray-500 text-sm mt-2 max-w-sm mx-auto">Personal projects will appear here.</p>
           </motion.div>
         )}
 
-        {/* Mobile: card FIRST (sa itaas), then explanation sa ilalim */}
+        {/* MOBILE: Clean spacing hierarchy */}
         {hasProjects && (
-        <div className="flex flex-col md:hidden gap-8">
-          <div className="relative order-1 px-2 sm:px-3">
-            {/* overflow-x-hidden only so slide animation doesn't scroll; card stays inside so right border visible */}
-            <div className="overflow-x-hidden">
-            <AnimatePresence mode="wait" custom={direction} initial={false}>
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                initial={{ opacity: 0, x: direction > 0 ? 80 : -80 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction > 0 ? -80 : 80 }}
-                transition={{ duration: 0.25 }}
-                className="w-full max-w-[400px] mx-auto"
+        <div className="flex flex-col md:hidden gap-3">
+          {/* Dots */}
+          <div className="flex items-center justify-center gap-2">
+            {filteredProjects.map((_, i) => (
+              <motion.button
+                key={i}
+                type="button"
+                onClick={() => { setDescriptionExpanded(false); setCurrentIndex(i) }}
+                aria-label={`Project ${i + 1}`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  i === currentIndex ? 'w-8 bg-cyan-400' : 'w-2.5 bg-slate-600 hover:bg-slate-500'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Carousel */}
+          <div className="w-full flex justify-center px-2">
+            <div 
+              className="relative overflow-hidden flex justify-center"
+              style={{ 
+                width: VIEWPORT_W_MOBILE,
+                maxWidth: '100%',
+                height: 340,
+                perspective: '1000px'
+              }}
+            >
+              <div
+                ref={trackMobileRef}
+                className="absolute left-0 top-0 flex items-start"
+                style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
               >
-                <div className="rounded-2xl overflow-hidden border-2 border-cyan-400/60 shadow-xl bg-slate-800/95 box-border">
-                  <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
-                    {(filteredProjects[currentIndex].image || filteredProjects[currentIndex].images?.length) ? (
-                      <ProjectImage project={filteredProjects[currentIndex]} />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
-                        <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
-                          <FaRobot className="w-8 h-8 text-cyan-400" />
+                {getCircularArray(filteredProjects, 2).map((project, idx) => {
+                  const actualIdx = (idx - 2 + filteredProjects.length) % filteredProjects.length
+                  const isCenter = actualIdx === currentIndex
+                  const offset = actualIdx - currentIndex
+                  
+                  let normalizedOffset = offset
+                  if (offset > filteredProjects.length / 2) {
+                    normalizedOffset = offset - filteredProjects.length
+                  } else if (offset < -filteredProjects.length / 2) {
+                    normalizedOffset = offset + filteredProjects.length
+                  }
+
+                  const isLeft = normalizedOffset === -1
+                  const isRight = normalizedOffset === 1
+                  
+                  return (
+                    <motion.div
+                      key={`mobile-${project.title}-${idx}`}
+                      className="flex-shrink-0 cursor-pointer"
+                      style={{
+                        width: CARD_WIDTH_MOBILE,
+                        marginRight: CARD_GAP_MOBILE,
+                        transformStyle: 'preserve-3d',
+                      }}
+                      animate={{
+                        scale: isCenter ? 1 : 0.85,
+                        rotateY: isLeft ? 25 : isRight ? -25 : 0,
+                        zIndex: isCenter ? 30 : 10,
+                        opacity: isCenter ? 1 : 0.75,
+                        filter: isCenter ? 'blur(0px) brightness(1)' : 'blur(3px) brightness(0.7)',
+                      }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                      onClick={() => !isCenter && setCurrentIndex(actualIdx)}
+                    >
+                      <div className={`rounded-xl overflow-hidden border-2 ${isCenter ? 'border-cyan-400/60 shadow-2xl' : 'border-slate-600/40'}`}>
+                        <div className="bg-slate-800/95">
+                          <div className="relative w-full aspect-[4/3] bg-slate-800 overflow-hidden">
+                            {(project.image || project.images?.length) ? (
+                              <ProjectImage project={project} />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
+                                <FaRobot className="w-8 h-8 text-cyan-400" />
+                              </div>
+                            )}
+                            {project.tag && (
+                              <span className={`absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-medium border ${TAG_CLASS}`}>
+                                {project.tag}
+                              </span>
+                            )}
+                            <span className={`absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-medium border ${projectTypes[project.type].class}`}>
+                              {projectTypes[project.type].label}
+                            </span>
+                          </div>
+                          <div className="p-2.5">
+                            <h3 className="font-display text-sm font-semibold text-white line-clamp-1">{project.title}</h3>
+                            {project.subtitle && (
+                              <p className="text-cyan-400/90 text-xs mt-0.5 line-clamp-1">{project.subtitle}</p>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    )}
-                    {filteredProjects[currentIndex].tag && (
-                    <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${TAG_CLASS}`}>
-                      {filteredProjects[currentIndex].tag}
-                    </span>
-                  )}
-                    <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[filteredProjects[currentIndex].type].class}`}>
-                      {projectTypes[filteredProjects[currentIndex].type].label}
-                    </span>
-                  </div>
-                  <div className="p-3 sm:p-4">
-                    <h3 className="font-display text-sm sm:text-base font-semibold text-white">{filteredProjects[currentIndex].title}</h3>
-                    <p className="text-cyan-400/90 text-xs mt-0.5 line-clamp-1">{filteredProjects[currentIndex].subtitle}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-            </div>
-            <div className="flex justify-between items-center mt-4 px-0">
-              <motion.button
-                type="button"
-                onClick={goPrev}
-                aria-label="Previous"
-                disabled={filteredProjects.length <= 1}
-                whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-              >
-                <FaChevronLeft className="w-5 h-5" />
-              </motion.button>
-              <span className="text-gray-500 text-sm">{currentIndex + 1} / {filteredProjects.length}</span>
-              <motion.button
-                type="button"
-                onClick={goNext}
-                aria-label="Next"
-                disabled={filteredProjects.length <= 1}
-                whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
-              >
-                <FaChevronRight className="w-5 h-5" />
-              </motion.button>
+                    </motion.div>
+                  )
+                })}
+              </div>
             </div>
           </div>
-          <div className="order-2">
+
+          {/* Arrows - proper spacing */}
+          <div className="flex justify-center items-center gap-8">
+            <motion.button
+              type="button"
+              onClick={goPrev}
+              aria-label="Previous"
+              disabled={filteredProjects.length <= 1}
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none hover:bg-cyan-500/20 transition-colors"
+            >
+              <FaChevronLeft className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              type="button"
+              onClick={goNext}
+              aria-label="Next"
+              disabled={filteredProjects.length <= 1}
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none hover:bg-cyan-500/20 transition-colors"
+            >
+              <FaChevronRight className="w-5 h-5" />
+            </motion.button>
+          </div>
+
+          {/* Description - proper spacing */}
+          <div>
             <DescriptionPanel />
           </div>
         </div>
         )}
 
-        {/* Desktop: two clear containers — explanation LEFT, carousel RIGHT (no overlap) */}
+        {/* DESKTOP - unchanged */}
         {hasProjects && (
-        <div className="hidden md:grid md:grid-cols-[minmax(0,1fr)_minmax(520px,1.75fr)] md:gap-6 lg:gap-8 md:items-start md:w-full">
-          {/* Left container: explanation only */}
-          <div className="min-w-0 flex flex-col">
-            <div className="lg:sticky lg:top-24">
-              <DescriptionPanel />
-            </div>
+        <div className="hidden md:block w-full">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            {filteredProjects.map((_, i) => (
+              <motion.button
+                key={i}
+                type="button"
+                onClick={() => { setDescriptionExpanded(false); setCurrentIndex(i) }}
+                aria-label={`Project ${i + 1}`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  i === currentIndex ? 'w-8 bg-cyan-400' : 'w-2.5 bg-slate-600 hover:bg-slate-500'
+                }`}
+              />
+            ))}
           </div>
-          {/* Right container: carousel only — min-width so side cards always peek through */}
-          <div className="min-w-0 flex flex-col items-center overflow-hidden">
-          <div
-            className="relative min-h-[420px] lg:min-h-[460px] overflow-hidden flex justify-center w-full min-w-0"
-          >
-            {/* Arrows in separate layer — fixed left/right so they never move when track animates */}
-            <div className="absolute inset-0 flex justify-between items-center px-4 lg:px-6 pointer-events-none">
+
+          <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex items-center justify-center gap-2 sm:gap-3 w-full">
               <motion.button
                 type="button"
                 onClick={goPrev}
@@ -443,10 +446,90 @@ const Projects = () => {
                 disabled={filteredProjects.length <= 1}
                 whileHover={{ scale: filteredProjects.length > 1 ? 1.08 : 1 }}
                 whileTap={{ scale: 0.96 }}
-                className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 shadow-xl flex items-center justify-center hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors flex-shrink-0 z-30 disabled:opacity-50 disabled:pointer-events-none"
+                className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 shadow-xl flex items-center justify-center hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors disabled:opacity-50 disabled:pointer-events-none"
               >
                 <FaChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
               </motion.button>
+              <div 
+                className="relative overflow-hidden flex justify-center flex-shrink-0"
+                style={{ width: VIEWPORT_W_DESKTOP, height: 520, perspective: '1200px' }}
+              >
+                <div
+                  ref={trackDesktopRef}
+                  className="absolute left-0 top-0 flex items-start"
+                  style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+                >
+                  {getCircularArray(filteredProjects, 2).map((project, idx) => {
+                    const actualIdx = (idx - 2 + filteredProjects.length) % filteredProjects.length
+                    const isCenter = actualIdx === currentIndex
+                    const offset = actualIdx - currentIndex
+                    
+                    let normalizedOffset = offset
+                    if (offset > filteredProjects.length / 2) {
+                      normalizedOffset = offset - filteredProjects.length
+                    } else if (offset < -filteredProjects.length / 2) {
+                      normalizedOffset = offset + filteredProjects.length
+                    }
+
+                    const isLeft = normalizedOffset === -1
+                    const isRight = normalizedOffset === 1
+                    
+                    return (
+                      <motion.div
+                        key={`desktop-${project.title}-${idx}`}
+                        className="flex-shrink-0 cursor-pointer"
+                        style={{
+                          width: CARD_WIDTH_DESKTOP,
+                          marginRight: CARD_GAP_DESKTOP,
+                          transformStyle: 'preserve-3d',
+                        }}
+                        animate={{
+                          scale: isCenter ? 1 : 0.88,
+                          rotateY: isLeft ? 25 : isRight ? -25 : 0,
+                          zIndex: isCenter ? 30 : 10,
+                          opacity: isCenter ? 1 : 0.75,
+                          filter: isCenter ? 'blur(0px) brightness(1)' : 'blur(3px) brightness(0.7)',
+                        }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        onClick={() => !isCenter && setCurrentIndex(actualIdx)}
+                      >
+                        <div className={`rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+                          isCenter ? 'border-cyan-400/60 shadow-2xl shadow-cyan-500/20 ring-2 ring-cyan-500/40' : 'border-slate-600/50 hover:border-cyan-500/40 shadow-xl'
+                        }`}>
+                          <div className="bg-slate-800/95 backdrop-blur-sm">
+                            <div className="relative w-full aspect-[4/3] bg-slate-800 overflow-hidden">
+                              {(project.image || project.images?.length) ? (
+                                <ProjectImage project={project} />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
+                                  <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
+                                    <FaRobot className="w-8 h-8 text-cyan-400" />
+                                  </div>
+                                </div>
+                              )}
+                              {project.tag && (
+                                <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${TAG_CLASS}`}>
+                                  {project.tag}
+                                </span>
+                              )}
+                              <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[project.type].class}`}>
+                                {projectTypes[project.type].label}
+                              </span>
+                            </div>
+                            <div className="p-4">
+                              <h3 className="font-display text-lg font-semibold text-white leading-tight">{project.title}</h3>
+                              {project.subtitle && (
+                                <p className="text-cyan-400/90 text-sm mt-1 leading-tight line-clamp-1">{project.subtitle}</p>
+                              )}
+                              <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mt-2">{project.description}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </div>
               <motion.button
                 type="button"
                 onClick={goNext}
@@ -454,120 +537,21 @@ const Projects = () => {
                 disabled={filteredProjects.length <= 1}
                 whileHover={{ scale: filteredProjects.length > 1 ? 1.08 : 1 }}
                 whileTap={{ scale: 0.96 }}
-                className="pointer-events-auto w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 shadow-xl flex items-center justify-center hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors flex-shrink-0 z-30 disabled:opacity-50 disabled:pointer-events-none"
+                className="flex-shrink-0 w-12 h-12 lg:w-14 lg:h-14 rounded-full bg-slate-800/95 border-2 border-cyan-500/50 text-cyan-400 shadow-xl flex items-center justify-center hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors disabled:opacity-50 disabled:pointer-events-none"
               >
                 <FaChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
               </motion.button>
             </div>
+          </div>
 
-            {/* Track: flex centers the track; x = offset so SELECTED card center = container center */}
-            <motion.div
-              className="flex items-start flex-shrink-0"
-              animate={{ x: getTrackOffset(currentIndex, filteredProjects.length) }}
-              transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-            >
-              {filteredProjects.map((project, i) => {
-                const offset = i - currentIndex
-                const isCenter = offset === 0
-                return (
-                  <motion.div
-                    key={`${project.title}-${i}`}
-                    className="flex-shrink-0 cursor-pointer"
-                    style={{ width: CARD_WIDTH_DESKTOP }}
-                    animate={{
-                      scale: 1 - Math.min(0.18, Math.abs(offset) * 0.08),
-                      rotate: offset * 3,
-                      zIndex: 20 + filteredProjects.length - Math.abs(offset),
-                      opacity: Math.abs(offset) > 2 ? 0.35 : 0.88 + (isCenter ? 0.12 : 0),
-                    }}
-                    transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-                    onClick={() => !isCenter && setCurrentIndex(i)}
-                  >
-                    <div
-                      className={`rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
-                        isCenter
-                          ? 'border-cyan-400/60 shadow-2xl shadow-cyan-500/20 ring-2 ring-cyan-500/40'
-                          : 'border-slate-600/60 border-cyan-500/30 shadow-xl'
-                      }`}
-                    >
-                      <div className="bg-slate-800/95 backdrop-blur-sm">
-                        <div className="relative aspect-video w-full bg-slate-800 overflow-hidden">
-                          {(project.image || project.images?.length) ? (
-                            <ProjectImage project={project} />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-slate-800/80">
-                              <div className="w-16 h-16 rounded-full bg-cyan-500/20 border-2 border-cyan-500/40 flex items-center justify-center">
-                                <FaRobot className="w-8 h-8 text-cyan-400" />
-                              </div>
-                            </div>
-                          )}
-                          {project.tag && (
-                          <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${TAG_CLASS}`}>
-                            {project.tag}
-                          </span>
-                        )}
-                          <span className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-medium border ${projectTypes[project.type].class}`}>
-                            {projectTypes[project.type].label}
-                          </span>
-                        </div>
-                        <div className="p-4">
-                          <h3 className="font-display text-lg font-semibold text-white leading-tight">{project.title}</h3>
-                          {project.subtitle && (
-                            <p className="text-cyan-400/90 text-sm mt-1 leading-tight line-clamp-1">{project.subtitle}</p>
-                          )}
-                          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mt-2">{project.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-            </div>
-
-        <div className="flex items-center justify-center gap-2 mt-6 w-full">
-          {filteredProjects.map((_, i) => (
-            <motion.button
-              key={i}
-              type="button"
-              onClick={() => { setDescriptionExpanded(false); setCurrentIndex(i) }}
-              aria-label={`Project ${i + 1}`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                i === currentIndex ? 'w-8 bg-cyan-400' : 'w-2.5 bg-slate-600 hover:bg-slate-500'
-              }`}
-            />
-          ))}
-        </div>
-        <p className="text-center text-gray-500 text-sm mt-2">
-          {currentIndex + 1} / {filteredProjects.length}
-        </p>
+          <div className="mt-3 w-full">
+            <DescriptionPanel />
           </div>
         </div>
         )}
-
-        <div className="flex items-center justify-center gap-2 mt-8 md:hidden">
-          {hasProjects && filteredProjects.map((_, i) => (
-            <motion.button
-              key={i}
-              type="button"
-              onClick={() => { setDescriptionExpanded(false); setCurrentIndex(i) }}
-              aria-label={`Project ${i + 1}`}
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                i === currentIndex ? 'w-8 bg-cyan-400' : 'w-2.5 bg-slate-600 hover:bg-slate-500'
-              }`}
-            />
-          ))}
-        </div>
-        <p className="text-center text-gray-500 text-sm mt-2 md:hidden">
-          {hasProjects ? `${currentIndex + 1} / ${filteredProjects.length}` : ''}
-        </p>
       </div>
 
-      {/* Left bottom corner: malaking wavy blob abot sa middle, laptop fit sa blob */}
+      {/* Decorative laptop */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -580,7 +564,7 @@ const Projects = () => {
         <div className="absolute inset-0 blob-corner-lb overflow-hidden">
           <img
             src={getImageUrl('/laptop_vqb31a.png')}
-            alt="Development setup — modern tools and workflows"
+            alt="Development setup"
             className="absolute inset-0 w-full h-full object-cover object-left object-bottom"
             loading="lazy"
             decoding="async"
