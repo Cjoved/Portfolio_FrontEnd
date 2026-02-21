@@ -165,6 +165,9 @@ const Projects = () => {
                   — {currentProject.subtitle}
                 </span>
               )}
+              {currentProject.organization && (
+                <span className="text-gray-500 text-xs block mt-0.5">{currentProject.organization}</span>
+              )}
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <motion.a
@@ -226,7 +229,7 @@ const Projects = () => {
           </h2>
           <div className="w-16 sm:w-24 h-0.5 sm:h-1 bg-cyan-500 mx-auto mb-2" />
           <p className="text-gray-400 text-sm sm:text-base mt-3 sm:mt-4 max-w-xl mx-auto px-1">
-            Multi-agent systems, document AI, and computer vision.
+            Agentic & RAG workflows, document AI, and computer vision.
           </p>
         </motion.div>
 
@@ -377,6 +380,9 @@ const Projects = () => {
                             {project.subtitle && (
                               <p className="text-cyan-400/90 text-xs mt-0.5 line-clamp-1">{project.subtitle}</p>
                             )}
+                            {project.organization && (
+                              <p className="text-gray-500 text-[10px] mt-1 line-clamp-1">{project.organization}</p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -520,6 +526,9 @@ const Projects = () => {
                               <h3 className="font-display text-lg font-semibold text-white leading-tight">{project.title}</h3>
                               {project.subtitle && (
                                 <p className="text-cyan-400/90 text-sm mt-1 leading-tight line-clamp-1">{project.subtitle}</p>
+                              )}
+                              {project.organization && (
+                                <p className="text-gray-500 text-xs mt-1 leading-tight">{project.organization}</p>
                               )}
                               <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mt-2">{project.description}</p>
                             </div>

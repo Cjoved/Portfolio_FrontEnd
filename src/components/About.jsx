@@ -89,21 +89,21 @@ const About = () => {
             className="space-y-6 order-1 md:order-2"
           >
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              I&apos;m a Junior AI Engineer who has delivered end-to-end AI systems as a solo developer,
-              including survey generation, document evaluation, and computer vision solutions.
+              I&apos;m a Junior AI Engineer who builds and ships end-to-end AI products—spanning
+              LLM applications (survey generation, document evaluation) and computer vision (detection/classification).
               My core stack includes Python, FastAPI, LangChain/LangGraph, PyTorch/YOLO,
-              and vector search with Qdrant + PostgreSQL.
+              and vector search using Qdrant with PostgreSQL.
             </motion.p>
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              I design multi-agent and LLM-powered workflows, build production APIs,
-              and manage data pipelines from preprocessing through deployment.
-              I work closely with agricultural and business stakeholders at Leads Agricultural Product Corporation
-              to translate real-world needs into production-ready AI tools.
+              I design agentic, retrieval-augmented, and multi-agent workflows, build production APIs,
+              and run data pipelines from preprocessing and evaluation through deployment.
+              At Leads Agricultural Product Corporation, I implement AI tools that turn field and business
+              requirements into reliable, production-grade systems.
             </motion.p>
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
               I hold a BS in Computer Science (Data Science) from Laguna University (June 2025),
-              where I built strong foundations in Machine Learning, Deep Learning, NLP,
-              Database Systems, AI, and Software Engineering.
+              with a focus on artificial intelligence, machine learning, NLP, and software engineering—including
+              hands-on work in deep learning and data systems.
             </motion.p>
             <motion.a
               href="#projects"

@@ -16,7 +16,7 @@ import AskCrichWidget from './components/AskCrichWidget'
 import { LenisProvider } from './context/LenisContext'
 
 const SITE_URL = 'https://crichveridiano.dev'
-const DEFAULT_DESCRIPTION = 'Crich Joved Veridiano — Junior AI Engineer. End-to-end AI systems: multi-agent workflows, document intelligence, computer vision. Python, FastAPI, LangChain, PyTorch, Qdrant.'
+const DEFAULT_DESCRIPTION = 'Crich Joved Veridiano — Junior AI Engineer. Builds and ships end-to-end AI products: LLM apps, computer vision, agentic and RAG workflows. Python, FastAPI, LangChain, PyTorch, Qdrant.'
 
 function App() {
   const [activeSection, setActiveSection] = useState('home')
@@ -72,11 +72,11 @@ function App() {
         <link rel="canonical" href={SITE_URL} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Crich Veridiano | Junior AI Engineer" />
-        <meta property="og:description" content="End-to-end AI systems: multi-agent workflows, document intelligence, computer vision. Python, FastAPI, LangChain, PyTorch, Qdrant." />
+        <meta property="og:description" content="Junior AI Engineer — end-to-end AI products: LLM apps, computer vision, agentic & RAG workflows. Python, FastAPI, LangChain, PyTorch, Qdrant." />
         <meta property="og:url" content={SITE_URL} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Crich Veridiano | Junior AI Engineer" />
-        <meta name="twitter:description" content="End-to-end AI systems: multi-agent workflows, document intelligence, computer vision." />
+        <meta name="twitter:description" content="Junior AI Engineer — LLM apps, computer vision, agentic & RAG workflows. Python, FastAPI, LangChain, PyTorch, Qdrant." />
       </Helmet>
       <Toaster
         position="top-center"
