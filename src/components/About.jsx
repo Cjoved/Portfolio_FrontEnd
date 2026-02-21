@@ -89,18 +89,21 @@ const About = () => {
             className="space-y-6 order-1 md:order-2"
           >
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              I'm a Junior AI Engineer with experience as a solo developer delivering end-to-end AI systems 
-              in survey generation, document evaluation, and computer vision. I'm strong in Python, FastAPI, 
-              LangChain/LangGraph, PyTorch/YOLO, and vector databases like Qdrant with PostgreSQL.
+              I&apos;m a Junior AI Engineer who has delivered end-to-end AI systems as a solo developer,
+              including survey generation, document evaluation, and computer vision solutions.
+              My core stack includes Python, FastAPI, LangChain/LangGraph, PyTorch/YOLO,
+              and vector search with Qdrant + PostgreSQL.
             </motion.p>
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              I design multi-agent and LLM-powered workflows, build production APIs, and handle data pipelines 
-              from preprocessing to deployment. I collaborate with agricultural and business stakeholders to 
-              transform domain needs into production-ready AI tools at Leads Agricultural Product Corporation.
+              I design multi-agent and LLM-powered workflows, build production APIs,
+              and manage data pipelines from preprocessing through deployment.
+              I work closely with agricultural and business stakeholders at Leads Agricultural Product Corporation
+              to translate real-world needs into production-ready AI tools.
             </motion.p>
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              BS in Computer Science (Data Science), Laguna University, June 2025. Relevant coursework: 
-              Machine Learning, Deep Learning, NLP, Database Systems, AI, and Software Engineering.
+              I hold a BS in Computer Science (Data Science) from Laguna University (June 2025),
+              where I built strong foundations in Machine Learning, Deep Learning, NLP,
+              Database Systems, AI, and Software Engineering.
             </motion.p>
             <motion.a
               href="#projects"
@@ -142,5 +145,4 @@ const About = () => {
 }
 
 export default About
-
 
